@@ -29,22 +29,21 @@ ifeq (${BINS},) # 如果BINS为空
   $(error Could not determine BINS, set CMD_DIRS or run in source dir)
 endif
 
-
+# make go.build apiserver linux_amd64
 .PHONY: go.build.verify
 go.build.verify: ## Verify supported go versions.
 ifneq ($(shell $(GO) version|awk -v min=$(GO_MINIMUM_VERSION) '{gsub(/go/,"",$$3);if($$3 >= min){print 0}else{print 1}}'), 0)
 	$(error unsupported go version. Please install a go version which is greater than or equal to '$(GO_MINIMUM_VERSION)')
 endif
 
-
+#
 .PHONY: go.build.%
 go.build.%: ## Build specified applications with platform, os and arch.
 	$(eval COMMAND := $(word 2,$(subst ., ,$*)))
 	$(eval PLATFORM := $(word 1,$(subst ., ,$*)))
 	$(eval OS := $(word 1,$(subst _, ,$(PLATFORM))))
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM))))
-	@echo "===========> Building binary $(COMMAND) $(VERSION) for $(OS) $(ARCH)"
-	#@ONEX_GIT_VERSION=$(VERSION) $(SCRIPTS_DIR)/build.sh $(COMMAND) $(PLATFORM)
+	#@KRM_GIT_VERSION=$(VERSION) $(SCRIPTS_DIR)/build.sh $(COMMAND) $(PLATFORM)
 	@if grep -q "func main()" $(KRM_ROOT)/cmd/$(COMMAND)/*.go &>/dev/null; then \
 		echo "===========> Building binary $(COMMAND) $(VERSION) for $(OS) $(ARCH)" ; \
 		CGO_ENABLED=0 GOOS=$(OS) GOARCH=$(ARCH) $(GO) build $(GO_BUILD_FLAGS) \
@@ -61,8 +60,8 @@ go.version: ## Show go version.
 # 打印 PLATFORM
 #$(info PLATFORM: $(PLATFORM))
 
-
-.PHONY: go.build
+# make go.build
+.PHONY: go.build # Build all applications.
 go.build: $(addprefix go.build., $(addprefix $(PLATFORM)., $(BINS))) ## Build all applications.
 
 .PHONY: go.build.multiarch
