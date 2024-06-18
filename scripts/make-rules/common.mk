@@ -83,3 +83,27 @@ else
 	IMAGE_PLAT := $(PLATFORM)
 endif
 
+
+
+# =====================================================
+# Makefile settings
+#
+# We don't need make's built-in rules.
+# zh: 我们不需要make的内置规则
+# 执行命令： V=1 make go.build  可以打印出所有的命令
+MAKEFLAGS += --no-builtin-rules
+ifeq ($(V),1)
+  # 使用 `$(MAKECMDGOALS)` 打印警告消息，显示 Makefile 的目标。`$(MAKECMDGOALS)` 是一个特殊变量，包含在命令行上指定的目标。
+  $(warning ***** starting Makefile for goal(s) "$(MAKECMDGOALS)")
+  # 打印当前日期和时间的警告消息。
+  $(warning ***** $(shell date))
+else
+  # If we're not debugging the Makefile, don't echo recipes.]
+  MAKEFLAGS += -s --no-print-directory
+endif
+
+# =====================================================
+# Linux command settings for the Makefile
+# zh: Makefile 的 Linux 命令设置
+FIND := find . ! -path './third_party/*' ! -path './vendor/*'
+XARGS := xargs --no-run-if-empty

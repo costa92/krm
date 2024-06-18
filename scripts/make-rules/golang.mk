@@ -14,8 +14,7 @@ endif
 # zh: 获取所有的cmd目录
 CMD_DIRS := $(wildcard $(KRM_ROOT)/cmd/*)
 # 打印 CMD_DIRS
- $(info CMD_DIRS: $(CMD_DIRS))
-
+#@ $(info CMD_DIRS: $(CMD_DIRS))
 # Filter out directories without Go files, as these directories cannot be compiled.
 # zh: 过滤掉没有Go文件的目录，因为这些目录不能被编译
 COMMANDS := $(filter-out $(wildcard %.md), $(foreach dir, $(CMD_DIRS), $(if $(wildcard $(dir)/*.go), $(dir),)))
