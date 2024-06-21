@@ -32,6 +32,23 @@ else
 endif
 
 
+## --------------------------------------
+## Hack / Tools
+## --------------------------------------
+
+##@ Hack and Tools
+
+.PHONY: format
+format: tools.verify.goimports tools.verify.gofumpt ## Run CI-related formaters. Run all formaters by specifying `A=1`.
+	@echo "===========> Formating codes"
+	@$(FIND) -type f -name '*.go' | $(XARGS) gofmt -w
+	@$(FIND) -type f -name '*.go' | $(XARGS) gofumpt -w
+	@$(FIND) -type f -name '*.go' | $(XARGS) goimports -w -local $(PRJ_SRC_PATH)
+	@$(GO) mod edit -fmt
+ifeq ($(ALL),1)
+	$(MAKE) format.protobuf
+endif
+
 
 .PHONY: install-tools
 install-tools: ## Install CI-related tools. Install all tools by specifying `A=1`.

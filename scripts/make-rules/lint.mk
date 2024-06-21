@@ -2,6 +2,9 @@
 GOLANGCI_LINT := golangci-lint
 KUBE_LINT := kube-linter
 
+.PHONY: lint.ci
+lint.ci: lint.golangci-lint  ## Run CI-related linters.
+
 .PHONY: lint.run
 lint.run: lint.golangci-lint ## Run all linters.
 
