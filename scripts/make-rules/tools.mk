@@ -9,7 +9,7 @@ CI_WORKFLOW_TOOLS := code-generator golangci-lint goimports wire
 MANUAL_INSTALL_TOOLS := kafka
 
 # unused tools in this project: gentool
-OTHER_TOOLS := mockgen
+OTHER_TOOLS := mockgen addlicense
 
 .PHONY: tools.install
 tools.install: _install.ci _install.other tools.print-manual-tool ## Install all tools.
@@ -18,6 +18,12 @@ tools.install: _install.ci _install.other tools.print-manual-tool ## Install all
 tools.print-manual-tool:
 	@echo "===========> The following tools may need to be installed manually:"
 	@echo $(MANUAL_INSTALL_TOOLS) | awk 'BEGIN{RS=" "} {printf("%15s%s\n","- ",$$0)}'
+
+
+.PHONY: tools.verify.%
+tools.verify.%: ## Verify a specified tool.
+	@if ! which $* &>/dev/null; then $(MAKE) tools.install.$*; fi
+
 
 .PHONY: _install.ci
 _install.ci: $(addprefix tools.install., $(CI_WORKFLOW_TOOLS)) ## Install necessary tools used by CI/CD workflow.
@@ -89,3 +95,10 @@ _install.grpc:
 	$(eval PROTOC_GEN_GO_VERSION := $(if $(strip $(GRPC_GATEWAY_VERSION)),$(strip $(GRPC_GATEWAY_VERSION)),latest))
 	@$(GO) install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@$(GRPC_GATEWAY_VERSION)
 	@$(GO) install github.com/grpc-ecos
+
+
+.PHONY: _install.addlicense
+_install.addlicense: ## Install addlicense.
+	# 判断 ADDLICENSE_VERSION 是否为空 如果为空则设置为latest
+	$(eval ADDLICENSE_VERSION := $(if $(strip $(ADDLICENSE_VERSION)),$(strip $(ADDLICENSE_VERSION)),latest))
+	@$(GO) install github.com/superproj/addlicense@$(ADDLICENSE_VERSION)

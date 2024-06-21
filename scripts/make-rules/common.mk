@@ -115,3 +115,12 @@ XARGS := xargs --no-run-if-empty
 
 # Helper function to get dependency version from go.mod
 get_go_version = $(shell go list -m $1 | awk '{print $$2}')
+
+define go_install
+$(info ===========> Installing $(1)@$(2))
+$(GO) install $(1)@$(2)
+endef
+
+
+
+SCRIPTS_DIR=$(KRM_ROOT)/scripts

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ Copyright 2024 costa <costa9293@gmail.com>. All rights reserved.
+ Use of this source code is governed by a MIT style
+ license that can be found in the LICENSE file. The original repo for
+ this file is https://github.com/costa92/krm.
+-->
+
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
