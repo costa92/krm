@@ -7,6 +7,10 @@ ifeq ($(origin KRM_ROOT),undefined)
 KRM_ROOT :=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 endif
 
+
+include $(KRM_ROOT)/scripts/make-rules/common-versions.mk
+
+
 # It's necessary to set this because some environments don't link sh -> bash.
 # zh 有些环境不会将sh链接到bash，所以需要设置这个变量
 SHELL := /usr/bin/env bash -o errexit -o pipefail +o nounset
@@ -107,3 +111,7 @@ endif
 # zh: Makefile 的 Linux 命令设置
 FIND := find . ! -path './third_party/*' ! -path './vendor/*'
 XARGS := xargs --no-run-if-empty
+
+
+# Helper function to get dependency version from go.mod
+get_go_version = $(shell go list -m $1 | awk '{print $$2}')

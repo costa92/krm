@@ -18,6 +18,13 @@ export USAGE_OPTIONS
 
 
 
+.PHONY: install-tools
+install-tools: ## Install CI-related tools. Install all tools by specifying `A=1`.
+	$(MAKE) _install.ci
+	if [[ "$(A)" == 1 ]]; then                                             \
+		$(MAKE) _install.other ;                                            \
+	fi
+
 # =================================
 .PHONY: targets
 targets: Makefile ## Show all Sub-makefile targets.
