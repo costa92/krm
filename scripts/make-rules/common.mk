@@ -109,13 +109,14 @@ endif
 # =====================================================
 # Linux command settings for the Makefile
 # zh: Makefile 的 Linux 命令设置
-FIND := find . ! -path './third_party/*' ! -path './vendor/*'
+FIND := find . ! -path './third_party/*' ! -path './vendor/*' ! -path './.git/*' ! -path './.idea/*' ! -path './_output/*'
 XARGS := xargs --no-run-if-empty
 
 
 # Helper function to get dependency version from go.mod
 get_go_version = $(shell go list -m $1 | awk '{print $$2}')
 
+# Helper function to install a go package
 define go_install
 $(info ===========> Installing $(1)@$(2))
 $(GO) install $(1)@$(2)
@@ -124,3 +125,13 @@ endef
 
 
 SCRIPTS_DIR=$(KRM_ROOT)/scripts
+
+
+# Kubernetes releated variables.
+## Metadata for driving the build lives here.
+META_DIR := $(KRM_ROOT)/.make
+GENERATED_FILE_PREFIX := zz_generated.
+EXTRA_GENERATE_PKG := k8s.io/api/core/v1
+# This controls the verbosity of the build. Higher numbers mean more output.
+# 这控制了构建的详细程度。数字越高，输出越多。
+KUBE_VERBOSE ?= 1
