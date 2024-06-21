@@ -59,6 +59,7 @@ go.version: ## Show go version.
 # 打印 PLATFORM
 #$(info PLATFORM: $(PLATFORM))
 
+# make go.build BINS=krm-apiserver  # 单独编译 krm-apiserver
 # make go.build
 .PHONY: go.build # Build all applications.
 go.build: $(addprefix go.build., $(addprefix $(PLATFORM)., $(BINS))) ## Build all applications.
