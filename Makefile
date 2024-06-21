@@ -17,6 +17,21 @@ endef
 export USAGE_OPTIONS
 
 
+## --------------------------------------
+## Lint / Verification
+## --------------------------------------
+
+##@ Lint and Verify
+
+.PHONY: lint
+lint: ## Run CI-related linters. Run all linters by specifying `A=1`.
+ifeq ($(ALL),1)
+	$(MAKE) lint.run
+else
+	$(MAKE) lint.ci
+endif
+
+
 
 .PHONY: install-tools
 install-tools: ## Install CI-related tools. Install all tools by specifying `A=1`.
