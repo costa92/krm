@@ -53,6 +53,8 @@ image.dockerfile: $(addprefix image.dockerfile., $(IMAGES)) ## Generate all dock
 image.dockerfile.%: ## Generate specified dockerfiles.
 	$(eval IMAGE := $(lastword $(subst ., ,$*)))
 	# Set a unified environment variable file
+	#打印下面的命令
+	@echo "===========> Generating Dockerfile for$(GENERATED_DOCKERFILE_DIR) $(IMAGE)"
 	@$(SCRIPTS_DIR)/gen-dockerfile.sh $(GENERATED_DOCKERFILE_DIR) $(IMAGE)
 ifeq ($(V),1)
 	echo "DBG: Generating Dockerfile at $(GENERATED_DOCKERFILE_DIR)/$(IMAGE)"

@@ -88,7 +88,6 @@ else
 endif
 
 
-
 # =====================================================
 # Makefile settings
 #
@@ -125,7 +124,7 @@ endef
 
 
 SCRIPTS_DIR=$(KRM_ROOT)/scripts
-
+GENERATED_DOCKERFILE_DIR=$(KRM_ROOT)/build/docker
 
 # Kubernetes releated variables.
 ## Metadata for driving the build lives here.
