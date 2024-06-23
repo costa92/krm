@@ -186,13 +186,18 @@ EOF
 }
 
 function get_base_image() {
+  # 打印 $1
+  # shellcheck disable=SC2091
+  $(info 参数,"$1")
   declare -A map=(
+    ["krm-apiserver"] = "golang:alpine"
     ["onex-fake-miner"]="debian:trixie"
     ["onexctl"]="debian:trixie"
     [${KRM_ALL_IN_KRM_IMAGE_NAME}]="systemd-debian:12"
   )
-
   base_image=${map[$1]}
+  # shellcheck disable=SC2091
+  $(info base_image,"$(base_image)")
   echo ${base_image:-debian:trixie}
 }
 
