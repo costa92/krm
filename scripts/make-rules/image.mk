@@ -10,7 +10,6 @@ _DOCKER_BUILD_EXTRA_ARGS :=
 
 # Track code version with Docker Label.
 DOCKER_LABELS ?= git-describe="$(shell date -u +v%Y%m%d)-$(shell git describe --tags --always --dirty)"
-
 ifdef HTTP_PROXY
 _DOCKER_BUILD_EXTRA_ARGS += --build-arg HTTP_PROXY=${HTTP_PROXY}
 endif
@@ -74,7 +73,7 @@ image.build.%: go.build.% image.dockerfile.% ## Build specified docker image.
 	$(eval IMAGE_PLAT := $(subst _,/,$(PLATFORM)))
 	$(eval OS := $(word 1,$(subst _, ,$(PLATFORM))))
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM))))
-	echo "===========> Building docker image  1 $(IMAGE) $(VERSION) for $(IMAGE_PLAT) $(PLATFORM)"
+	echo "===========> Building docker image $(IMAGE) $(VERSION) for $(IMAGE_PLAT) $(PLATFORM)"
 	$(eval DOCKERFILE := Dockerfile)
 	$(eval DST_DIR := $(TMP_DIR)/$(IMAGE))
 	@mkdir -p $(TMP_DIR)/$(IMAGE)
@@ -88,7 +87,7 @@ image.build.%: image.dockerfile.% ## Build specified docker image in multistage 
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM))))
 	$(eval DOCKERFILE := Dockerfile.multistage)
 	$(eval DST_DIR := $(KRM_ROOT))
-	@echo "===========> Building docker image 111 $(IMAGE) $(VERSION) for $(IMAGE_PLAT)"
+	@echo "===========> Building docker image $(IMAGE) $(VERSION) for $(IMAGE_PLAT)"
 endif
 	@export OUTPUT_DIR=$(OUTPUT_DIR)
 	@if [ -f  $(KRM_ROOT)/build/docker/$(IMAGE)/build.sh ] ; then \
@@ -101,12 +100,14 @@ endif
 		--build-arg ARCH=$(ARCH) \
 		--build-arg goproxy=$($(GO) env GOPROXY) \
 		--label $(DOCKER_LABELS) \
-		-t $(REGISTRY_PREFIX)/$(IMAGE)-$(ARCH):$(VERSION) \
+		-t $(REGISTRY_PREFIX) $(IMAGE)-$(ARCH):$(VERSION) \
 		$(DST_DIR))
+	echo "$(DOCKER) build --platform $(IMAGE_PLAT) $(BUILD_SUFFIX)"
 	@if [ $(shell $(GO) env GOARCH) != $(ARCH) ] ; then \
 		$(MAKE) image.daemon.verify ; \
 		$(DOCKER) build --platform $(IMAGE_PLAT) $(BUILD_SUFFIX) ; \
 	else \
+		echo $(BUILD_SUFFIX); \
 		$(DOCKER) build $(BUILD_SUFFIX) ; \
 	fi
 	@-rm -rf $(TMP_DIR)/$(IMAGE)

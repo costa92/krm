@@ -1,12 +1,31 @@
-// Copyright 2024 costa <costa9293@gmail.com>. All rights reserved.
-// Use of this source code is governed by a MIT style
-// license that can be found in the LICENSE file. The original repo for
-// this file is https://github.com/costa92/krm.
-
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
+
+func hello(w http.ResponseWriter, req *http.Request) {
+
+	fmt.Fprintf(w, "hello\n")
+}
+
+func headers(w http.ResponseWriter, req *http.Request) {
+
+	for name, headers := range req.Header {
+		for _, h := range headers {
+			fmt.Fprintf(w, "%v: %v\n", name, h)
+		}
+	}
+}
 
 func main() {
-	fmt.Println("Hello, World!")
+
+	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/headers", headers)
+
+	err := http.ListenAndServe(":8090", nil)
+	if err != nil {
+		return
+	}
 }

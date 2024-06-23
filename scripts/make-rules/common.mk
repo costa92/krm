@@ -88,6 +88,7 @@ ifeq ($(origin PLATFORM), undefined)
 	endif
 	PLATFORM := $(GOOS)_$(GOARCH)
 
+	# 判断 GOOS 是否是 darwin
 	ifeq ($(GOOS),darwin)
 		# Use windows as the default OS when building images
 		IMAGE_PLAT := darwin_$(GOARCH)
