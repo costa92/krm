@@ -69,14 +69,14 @@ image.build.multiarch: image.verify go.build.verify $(foreach p,$(PLATFORMS),$(a
 .PHONY: image.build.%
 ifneq (${MULTISTAGE},1)
 image.build.%: go.build.% image.dockerfile.% ## Build specified docker image.
+	@echo "PLATFORM is $(PLATFORM)"
 	$(eval IMAGE := $(word 2,$(subst ., ,$*)))
 	$(eval IMAGE_PLAT := $(subst _,/,$(PLATFORM)))
 	$(eval OS := $(word 1,$(subst _, ,$(PLATFORM))))
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM))))
+	echo "===========> Building docker image  1 $(IMAGE) $(VERSION) for $(IMAGE_PLAT) $(PLATFORM)"
 	$(eval DOCKERFILE := Dockerfile)
 	$(eval DST_DIR := $(TMP_DIR)/$(IMAGE))
-	@echo "===========> Building docker image $(IMAGE) $(VERSION) for $(IMAGE_PLAT)"
-
 	@mkdir -p $(TMP_DIR)/$(IMAGE)
 	@cp -r $(OUTPUT_DIR)/platforms/$(IMAGE_PLAT)/$(IMAGE) $(TMP_DIR)/$(IMAGE)/
 else
@@ -88,7 +88,7 @@ image.build.%: image.dockerfile.% ## Build specified docker image in multistage 
 	$(eval ARCH := $(word 2,$(subst _, ,$(PLATFORM))))
 	$(eval DOCKERFILE := Dockerfile.multistage)
 	$(eval DST_DIR := $(KRM_ROOT))
-	@echo "===========> Building docker image $(IMAGE) $(VERSION) for $(IMAGE_PLAT)"
+	@echo "===========> Building docker image 111 $(IMAGE) $(VERSION) for $(IMAGE_PLAT)"
 endif
 	@export OUTPUT_DIR=$(OUTPUT_DIR)
 	@if [ -f  $(KRM_ROOT)/build/docker/$(IMAGE)/build.sh ] ; then \

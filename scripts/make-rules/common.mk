@@ -39,6 +39,13 @@ OUTPUT_DIR := $(KRM_ROOT)/_output
 $(shell mkdir -p $(OUTPUT_DIR))
 endif
 
+#  ===================
+# Local binary directory
+ifeq ($(origin TMP_DIR),undefined)
+TMP_DIR := $(OUTPUT_DIR)/tmp
+$(shell mkdir -p $(TMP_DIR))
+endif
+
 
 
 # set the version number. you should not need to do this
@@ -71,6 +78,7 @@ PLATFORMS ?= darwin_amd64 windows_amd64 linux_amd64 linux_arm64
 
 # Set a specific PLATFORM
 ifeq ($(origin PLATFORM), undefined)
+	#	打印 PLATFORM
 	# Use the default platform when building images
 	ifeq ($(origin GOOS), undefined)
 		GOOS := $(shell go env GOOS)
@@ -79,14 +87,20 @@ ifeq ($(origin PLATFORM), undefined)
 		GOARCH := $(shell go env GOARCH)
 	endif
 	PLATFORM := $(GOOS)_$(GOARCH)
-	# Use linux as the default OS when building images
-	IMAGE_PLAT := linux_$(GOARCH)
+
+	ifeq ($(GOOS),darwin)
+		# Use windows as the default OS when building images
+		IMAGE_PLAT := darwin_$(GOARCH)
+	else
+		# Use linux as the default OS when building images
+    	IMAGE_PLAT := linux_$(GOARCH)
+	endif
 else
 	GOOS := $(word 1, $(subst _, ,$(PLATFORM)))
 	GOARCH := $(word 2, $(subst _, ,$(PLATFORM)))
 	IMAGE_PLAT := $(PLATFORM)
 endif
-
+$(info IMAGE_PLAT: $(IMAGE_PLAT))
 
 # =====================================================
 # Makefile settings

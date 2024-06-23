@@ -189,7 +189,7 @@ function get_base_image() {
   declare -A map=(
     ["onex-fake-miner"]="debian:trixie"
     ["onexctl"]="debian:trixie"
-    [${ONEX_ALL_IN_ONE_IMAGE_NAME}]="systemd-debian:12"
+    [${KRM_ALL_IN_KRM_IMAGE_NAME}]="systemd-debian:12"
   )
 
   base_image=${map[$1]}
@@ -198,7 +198,7 @@ function get_base_image() {
 
 cat_func=cat_dockerfile
 [[ ! -d ${DOCKERFILE_DIR} ]] && mkdir -p ${DOCKERFILE_DIR}
-[[ ${IMAGE_NAME} == "${ONEX_ALL_IN_ONE_IMAGE_NAME}" ]] && cat_func=cat_allinone_dockerfile
+[[ ${IMAGE_NAME} == "${KRM_ALL_IN_KRM_IMAGE_NAME}" ]] && cat_func=cat_allinone_dockerfile
 
 BASE_IMAGE=$(get_base_image ${IMAGE_NAME})
 
@@ -207,7 +207,7 @@ eval ${cat_func}| sed -e "s/BASE_IMAGE/${BASE_IMAGE}/g" -e "s/IMAGE_NAME/${IMAGE
 
 # generate multi-stage dockerfile
 # onex-allinone does not need multiple stages.
-if [[ ${IMAGE_NAME} != "${ONEX_ALL_IN_ONE_IMAGE_NAME}" ]];then
+if [[ ${IMAGE_NAME} != "${KRM_ALL_IN_KRM_IMAGE_NAME}" ]];then
     cat_multistage_dockerfile | \
         sed -e "s/BASE_IMAGE/${BASE_IMAGE}/g" -e "s/IMAGE_NAME/${IMAGE_NAME}/g" > ${DOCKERFILE_DIR}/Dockerfile.multistage
 fi
