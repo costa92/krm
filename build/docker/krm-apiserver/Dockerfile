@@ -9,8 +9,8 @@
 
 # Build the krm-apiserver binary
 # Run this with docker build --build-arg prod_image=<golang:x.y.z>
-# Default <prod_image> is debian:trixie
-ARG prod_image=debian:trixie
+# Default <prod_image> is golang:alpine
+ARG prod_image=golang:alpine
 
 FROM ${prod_image}
 LABEL maintainer="<colin404@foxmail.com>"

@@ -116,7 +116,7 @@ function krm::log::usage_from_stdin() {
 # Print out some info that isn't a top level status line
 function krm::log::info() {
   local V="${V:-0}"
-  if (( ONEX_VERBOSE < V )) || (( KUBE_VERBOSE < V )); then
+  if (( KRM_VERBOSE < V )) || (( KUBE_VERBOSE < V )); then
     return
   fi
 
