@@ -27,6 +27,9 @@ source "${KRM_ROOT}/scripts/lib/logging.sh"
 source "${KRM_ROOT}/scripts/lib/color.sh"
 
 
+source "${KRM_ROOT}/scripts/lib/golang.sh"
+
+
 
 # Marker function to indicate init.sh has been fully sourced
 krm::init::loaded() {
