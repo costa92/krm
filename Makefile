@@ -32,6 +32,12 @@ else
 endif
 
 
+
+.PHONY: protoc
+protoc: ## Generate api proto files.
+	$(MAKE) gen.protoc
+
+
 ## --------------------------------------
 ## Hack / Tools
 ## --------------------------------------

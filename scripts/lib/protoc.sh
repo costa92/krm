@@ -79,8 +79,6 @@ function krm::protoc::check_protoc() {
     echo "platform-appropriate Protobuf package for your OS from"
     echo "https://github.com/protocolbuffers/protobuf/releases"
     return 1
-  else
-    echo "protoc v${PROTOC_VERSION} is already installed."
   fi
 }
 

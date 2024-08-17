@@ -1,0 +1,52 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: UserCenter API
+    version: 0.0.1
+paths:
+    /v1/usercenter/login:
+        post:
+            tags:
+                - UserCenter
+            description: Login 登录
+            operationId: UserCenter_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/usercenter.v1.LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/usercenter.v1.LoginReply'
+components:
+    schemas:
+        usercenter.v1.LoginReply:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+                accessToken:
+                    type: string
+                type:
+                    type: string
+                expiresAt:
+                    type: integer
+                    format: int64
+            description: LoginReply 登录响应
+        usercenter.v1.LoginRequest:
+            type: object
+            properties:
+                username:
+                    type: string
+                password:
+                    type: string
+            description: LoginRequest 登录请求
+tags:
+    - name: UserCenter

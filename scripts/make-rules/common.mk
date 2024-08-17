@@ -149,3 +149,6 @@ EXTRA_GENERATE_PKG := k8s.io/api/core/v1
 # This controls the verbosity of the build. Higher numbers mean more output.
 # 这控制了构建的详细程度。数字越高，输出越多。
 KUBE_VERBOSE ?= 1
+
+APIROOT ?= $(KRM_ROOT)/pkg/api
+APISROOT ?= $(KRM_ROOT)/pkg/apis
