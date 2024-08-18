@@ -23,9 +23,9 @@ gen.protoc: ## Generate go source files from protobuf files.
 		--openapiv2_opt=json_names_for_fields=false \
 		$(shell find $(APIROOT) -name *.proto)
 	# Only onex-fake-server use grpc-gateway
-	@protoc \
-		--proto_path=$(APIROOT) \
-		--proto_path=$(APISROOT) \
-		--proto_path=$(KRM_ROOT)/third_party \
-		--grpc-gateway_out=paths=source_relative:$(APIROOT) \
-		$(shell find $(APIROOT)/usercenter -name *.proto)
+#	@protoc \
+#		--proto_path=$(APIROOT) \
+#		--proto_path=$(APISROOT) \
+#		--proto_path=$(KRM_ROOT)/third_party \
+#		--grpc-gateway_out=paths=source_relative:$(APIROOT) \
+#		$(shell find $(APIROOT)/usercenter -name *.proto)

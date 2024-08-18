@@ -101,7 +101,7 @@ else
 	GOARCH := $(word 2, $(subst _, ,$(PLATFORM)))
 	IMAGE_PLAT := $(PLATFORM)
 endif
-$(info IMAGE_PLAT: $(IMAGE_PLAT))
+#$(info IMAGE_PLAT: $(IMAGE_PLAT))
 
 # =====================================================
 # Makefile settings

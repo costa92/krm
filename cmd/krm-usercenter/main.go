@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "github.com/costa92/krm/cmd/krm-usercenter/app"
 
 func main() {
-	fmt.Println("hello world")
+	app.NewApp("krm-usercenter").Run()
 }
