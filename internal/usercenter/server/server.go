@@ -1,7 +1,9 @@
 package server
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/costa92/krm/pkg/log"
 	krtlog "github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/middleware/auth/jwt"
@@ -43,7 +45,6 @@ func NewMiddlewares(logger krtlog.Logger, a authn.Authenticator, v validate.IVal
 		// circuitbreaker.Client(),
 		ratelimit.Server(),
 		tracing.Server(),
-		metadata.Server(),
 		selector.Server(jwt.Server(a)).Match(NewWhiteListMatcher()).Build(),
 		validate.Validator(v),
 		logging.Server(logger),
