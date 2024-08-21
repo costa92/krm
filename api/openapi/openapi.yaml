@@ -37,8 +37,7 @@ components:
                 type:
                     type: string
                 expiresAt:
-                    type: integer
-                    format: int64
+                    type: string
             description: LoginReply 登录响应
         usercenter.v1.LoginRequest:
             type: object
