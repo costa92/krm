@@ -32,8 +32,7 @@ func run(opts *options.Options) app.RunFunc {
 			return err
 		}
 
-		_ = genericapiserver.SetupSignalHandler()
-		return Run(cfg, nil)
+		return Run(cfg, genericapiserver.SetupSignalHandler())
 	}
 }
 

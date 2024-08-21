@@ -10,6 +10,7 @@ import (
 	"github.com/google/wire"
 )
 
+// ProviderSet is a wire provider set for creating an App.
 var ProviderSet = wire.NewSet(wire.Struct(new(AppConfig), "*"), NewLogger, NewApp)
 
 type AppInfo struct {
@@ -31,7 +32,7 @@ func NewAppInfo(id, name, version string) AppInfo {
 	}
 }
 
-// The purpose of defining the AppConfig is to demonstrate the usage of wire.Struct.
+// AppConfig The purpose of defining the AppConfig is to demonstrate the usage of wire.Struct.
 type AppConfig struct {
 	Info      AppInfo
 	Logger    krtlog.Logger

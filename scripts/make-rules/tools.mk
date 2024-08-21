@@ -106,6 +106,10 @@ _install.kratos: _install.grpc ## Install kratos toolkit, includes multiple prot
 
 	@#$(SCRIPTS_DIR)/add-completion.sh kratos bash
 
+.PHONY: _install.buf
+_install.buf: ## Install buf command line tool.
+	@$(GO) install github.com/bufbuild/buf/cmd/buf@$(BUF_VERSION)
+
 # make tools.install.kratos
 .PHONY: _install.addlicense
 _install.addlicense: ## Install addlicense.

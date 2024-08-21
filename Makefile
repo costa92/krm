@@ -22,7 +22,6 @@ export USAGE_OPTIONS
 ## --------------------------------------
 
 ##@ Lint and Verify
-
 .PHONY: lint
 lint: ## Run CI-related linters. Run all linters by specifying `A=1`.
 ifeq ($(ALL),1)
@@ -38,13 +37,18 @@ protoc: ## Generate api proto files.
 	$(MAKE) gen.protoc
 
 
+
+.PHONY: tidy
+tidy:
+	@$(GO) mod tidy
+
 ## --------------------------------------
 ## Hack / Tools
 ## --------------------------------------
 
 ##@ Hack and Tools
 
-.PHONY: format
+.PHONY: fmt
 format: tools.verify.goimports tools.verify.gofumpt ## Run CI-related formaters. Run all formaters by specifying `A=1`.
 	@echo "===========> Formating codes"
 	@$(FIND) -type f -name '*.go' | $(XARGS) gofmt -w
@@ -55,6 +59,12 @@ ifeq ($(ALL),1)
 	$(MAKE) format.protobuf
 endif
 
+
+.PHONY: format.protobuf
+format.protobuf: tools.verify.buf ## Lint protobuf files.
+	@for f in $(shell find $(APIROOT) -name *.proto) ; do                  \
+	  buf format -w $$f ;                                                  \
+	done
 
 .PHONY: install-tools
 install-tools: ## Install CI-related tools. Install all tools by specifying `A=1`.

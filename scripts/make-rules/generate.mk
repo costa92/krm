@@ -30,3 +30,10 @@ gen.protoc: ## Generate go source files from protobuf files.
 #		--proto_path=$(KRM_ROOT)/third_party \
 #		--grpc-gateway_out=paths=source_relative:$(APIROOT) \
 #		$(shell find $(APIROOT)/usercenter -name *.proto)
+
+
+.PHONY: go.generate
+go.generate: tools.verify.mockgen tools.verify.wire ## Run `go generate ./...` command.
+	echo "===========> Running go generate"
+	@$(GO) generate $(KRM_ROOT)/...
+	echo "===========> Running wire"

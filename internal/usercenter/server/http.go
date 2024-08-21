@@ -19,7 +19,6 @@ import (
 	"github.com/costa92/krm/internal/pkg/pprof"
 	"github.com/costa92/krm/internal/usercenter/service"
 	v1 "github.com/costa92/krm/pkg/api/usercenter/v1"
-	"github.com/superproj/onex/pkg/authn"
 )
 
 func NewWhiteListMatcher() selector.MatchFunc {
@@ -38,7 +37,7 @@ func NewWhiteListMatcher() selector.MatchFunc {
 }
 
 // NewHTTPServer creates a new HTTP server with middleware and handler chain.
-func NewHTTPServer(c *Config, gw *service.UserCenterService, a authn.Authenticator, middlewares []middleware.Middleware) *http.Server {
+func NewHTTPServer(c *Config, gw *service.UserCenterService, middlewares []middleware.Middleware) *http.Server {
 	// Define the server options with the middleware chain and other configuration.
 	opts := []http.ServerOption{
 		// http.WithDiscovery(nil),
