@@ -42,7 +42,6 @@ func NewMiddlewares(logger krtlog.Logger, a authn.Authenticator, v validate.IVal
 		),
 
 		i18nmw.Translator(i18n.WithLanguage(language.English), i18n.WithFS(locales.Locales)),
-		// circuitbreaker.Client(),
 		ratelimit.Server(),
 		tracing.Server(),
 		selector.Server(jwt.Server(a)).Match(NewWhiteListMatcher()).Build(),

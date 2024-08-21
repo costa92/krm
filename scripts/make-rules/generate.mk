@@ -4,13 +4,14 @@
 
 
 SERVICES ?= $(filter-out tools,$(foreach service,$(wildcard ${KRM_ROOT}/cmd/*),$(notdir ${service})))
+echo SERVICES: $(SERVICES)
 
 .PHONY: gen.protoc
 gen.protoc: ## Generate go source files from protobuf files.
 	@protoc \
 		--proto_path=$(APIROOT) \
 		--proto_path=$(APISROOT) \
-		--proto_path=$(KRM_ROOT)/third_party \
+		--proto_path=$(KRM_ROOT)/third_party/protobuf \
 		--go_out=paths=source_relative:$(APIROOT) \
 		--go-http_out=paths=source_relative:$(APIROOT) \
 		--go-grpc_out=paths=source_relative:$(APIROOT) \

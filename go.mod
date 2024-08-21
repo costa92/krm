@@ -8,7 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-kratos/kratos/contrib/registry/consul/v2 v2.0.0-20230830131453-6c026bce56a9
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20230830131453-6c026bce56a9
-	github.com/go-kratos/kratos/v2 v2.8.0
+	github.com/go-kratos/kratos/v2 v2.7.3
 	github.com/go-kratos/swagger-api v1.0.1
 	github.com/google/wire v0.5.0
 	github.com/gorilla/handlers v1.5.1
@@ -192,6 +192,7 @@ require (
 )
 
 replace (
+	//google.golang.org/grpc => google.golang.org/grpc v1.58.3
 	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.31.0
 	// k8s.io/kubernetes 经常会被自动变更为v1.15.0-alpha.0，这里使用replace解决掉
 	k8s.io/kubernetes => k8s.io/kubernetes v1.29.8

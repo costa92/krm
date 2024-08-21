@@ -88,15 +88,25 @@ _install.golangci-lint: ## Install golangci-lint.
 
 .PHONY: _install.grpc
 _install.grpc:
-	$(eval PROTOC_GEN_GO_VERSION := $(if $(strip $(PROTOC_GEN_GO_VERSION)),$(strip $(PROTOC_GEN_GO_VERSION)),latest))
 	@$(GO) install google.golang.org/protobuf/cmd/protoc-gen-go@$(PROTOC_GEN_GO_VERSION)
-	$(eval PROTOC_GEN_GO_VERSION := $(if $(strip $(PROTOC_GEN_GO_GRPC_VERSION)),$(strip $(PROTOC_GEN_GO_GRPC_VERSION)),latest))
 	@$(GO) install google.golang.org/grpc/cmd/protoc-gen-go-grpc@$(PROTOC_GEN_GO_GRPC_VERSION)
-	$(eval PROTOC_GEN_GO_VERSION := $(if $(strip $(GRPC_GATEWAY_VERSION)),$(strip $(GRPC_GATEWAY_VERSION)),latest))
 	@$(GO) install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@$(GRPC_GATEWAY_VERSION)
-	@$(GO) install github.com/grpc-ecos
+	@$(GO) install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@$(GRPC_GATEWAY_VERSION)
+	@#$(SCRIPTS_DIR)/install-protoc.sh
 
 
+.PHONY: _install.kratos
+_install.kratos: _install.grpc ## Install kratos toolkit, includes multiple protoc plugins.
+	@$(GO) install github.com/joelanford/go-apidiff@$(GO_APIDIFF_VERSION)
+	@$(GO) install github.com/envoyproxy/protoc-gen-validate@$(PROTOC_GEN_VALIDATE_VERSION)
+	@$(GO) install github.com/google/gnostic/cmd/protoc-gen-openapi@$(PROTOC_GEN_OPENAPI_VERSION)
+	@$(GO) install github.com/go-kratos/kratos/cmd/kratos/v2@$(KRATOS_VERSION)
+	@$(GO) install github.com/go-kratos/kratos/cmd/protoc-gen-go-errors/v2@$(KRATOS_VERSION)
+	@$(GO) install github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2@$(KRATOS_VERSION)
+
+	@#$(SCRIPTS_DIR)/add-completion.sh kratos bash
+
+# make tools.install.kratos
 .PHONY: _install.addlicense
 _install.addlicense: ## Install addlicense.
 	# 判断 ADDLICENSE_VERSION 是否为空 如果为空则设置为latest
