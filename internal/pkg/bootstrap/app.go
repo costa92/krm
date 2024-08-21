@@ -5,7 +5,6 @@ import (
 	"os"
 
 	krtlog "github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/google/wire"
 )
@@ -34,9 +33,9 @@ func NewAppInfo(id, name, version string) AppInfo {
 
 // AppConfig The purpose of defining the AppConfig is to demonstrate the usage of wire.Struct.
 type AppConfig struct {
-	Info      AppInfo
-	Logger    krtlog.Logger
-	Registrar registry.Registrar
+	Info   AppInfo
+	Logger krtlog.Logger
+	//Registrar registry.Registrar
 }
 
 // NewApp creates a new kratos app.
@@ -47,7 +46,7 @@ func NewApp(c AppConfig, servers ...transport.Server) *kratos.App {
 		kratos.Version(c.Info.Version),
 		kratos.Metadata(c.Info.Metadata),
 		kratos.Logger(c.Logger),
-		kratos.Registrar(c.Registrar),
+		//kratos.Registrar(c.Registrar),
 		kratos.Server(servers...),
 	)
 }
