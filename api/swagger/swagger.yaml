@@ -1,0 +1,73 @@
+consumes:
+    - application/json
+produces:
+    - application/json
+swagger: "2.0"
+info:
+    title: usercenter/v1/usercenter.proto
+    version: version not set
+paths:
+    /v1/usercenter/login:
+        post:
+            operationId: UserCenter_Login
+            parameters:
+                - in: body
+                  name: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/v1LoginRequest'
+            responses:
+                "200":
+                    description: A successful response.
+                    schema:
+                        $ref: '#/definitions/v1LoginReply'
+                default:
+                    description: An unexpected error response.
+                    schema:
+                        $ref: '#/definitions/rpcStatus'
+            summary: Login 登录
+            tags:
+                - UserCenter
+definitions:
+    protobufAny:
+        additionalProperties: {}
+        properties:
+            '@type':
+                type: string
+        type: object
+    rpcStatus:
+        properties:
+            code:
+                format: int32
+                type: integer
+            details:
+                items:
+                    $ref: '#/definitions/protobufAny'
+                    type: object
+                type: array
+            message:
+                type: string
+        type: object
+    v1LoginReply:
+        properties:
+            access_token:
+                type: string
+            expiresAt:
+                format: int64
+                type: string
+            refresh_token:
+                type: string
+            type:
+                type: string
+        title: LoginReply 登录响应
+        type: object
+    v1LoginRequest:
+        properties:
+            password:
+                type: string
+            username:
+                type: string
+        title: LoginRequest 登录请求
+        type: object
+tags:
+    - name: UserCenter

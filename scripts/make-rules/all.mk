@@ -7,3 +7,4 @@ include scripts/make-rules/generate.mk
 include scripts/make-rules/copyright.mk
 include scripts/make-rules/lint.mk
 include scripts/make-rules/image.mk
+include scripts/make-rules/swagger.mk

@@ -4,6 +4,7 @@ GOLANGCI_LINT_VERSION := v1.55.2
 GO_APIDIFF_VERSION ?= v0.8.2
 PROTOC_GEN_OPENAPI_VERSION ?= v0.7.0
 BUF_VERSION ?= v1.28.1
+GO_SWAGGER_VERSION ?= v0.31.0
 
 # call get_go_version,github.com/golang/mock  # 获取golang/mock的版本
 MOCKGEN_VERSION ?= $(call get_go_version,github.com/golang/mock)

@@ -42,6 +42,17 @@ protoc: ## Generate api proto files.
 tidy:
 	@$(GO) mod tidy
 
+
+.PHONY: swagger
+#swagger: gen.protoc
+swagger: ## Generate and aggregate swagger document.
+	@$(MAKE) swagger.run
+
+.PHONY: swagger.serve
+serve-swagger: ## Serve swagger spec and docs at 65534.
+	@$(MAKE) swagger.serve
+
+
 ## --------------------------------------
 ## Hack / Tools
 ## --------------------------------------
