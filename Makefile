@@ -1,6 +1,10 @@
 # Build all by default
 .DEFAULT_GOAL := help
 
+
+.PHONY: all
+all: format tidy gen add-copyright lint cover build
+
 # ==================================
 # include
 include scripts/make-rules/common.mk
@@ -59,7 +63,7 @@ serve-swagger: ## Serve swagger spec and docs at 65534.
 
 ##@ Hack and Tools
 
-.PHONY: fmt
+.PHONY: format
 format: tools.verify.goimports tools.verify.gofumpt ## Run CI-related formaters. Run all formaters by specifying `A=1`.
 	@echo "===========> Formating codes"
 	@$(FIND) -type f -name '*.go' | $(XARGS) gofmt -w
@@ -67,6 +71,7 @@ format: tools.verify.goimports tools.verify.gofumpt ## Run CI-related formaters.
 	@$(FIND) -type f -name '*.go' | $(XARGS) goimports -w -local $(PRJ_SRC_PATH)
 	@$(GO) mod edit -fmt
 ifeq ($(ALL),1)
+	@echo "===========> Formating protobuf files"
 	$(MAKE) format.protobuf
 endif
 

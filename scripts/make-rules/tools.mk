@@ -95,6 +95,10 @@ _install.grpc:
 	@#$(SCRIPTS_DIR)/install-protoc.sh
 
 
+.PHONY: _install.goimports
+_install.goimports: ## Install goimports.
+	@$(GO) install golang.org/x/tools/cmd/goimports@$(GO_IMPORTS_VERSION)
+
 .PHONY: _install.kratos
 _install.kratos: _install.grpc ## Install kratos toolkit, includes multiple protoc plugins.
 	@$(GO) install github.com/joelanford/go-apidiff@$(GO_APIDIFF_VERSION)
@@ -116,3 +120,7 @@ _install.addlicense: ## Install addlicense.
 	# 判断 ADDLICENSE_VERSION 是否为空 如果为空则设置为latest
 	$(eval ADDLICENSE_VERSION := $(if $(strip $(ADDLICENSE_VERSION)),$(strip $(ADDLICENSE_VERSION)),latest))
 	@$(GO) install github.com/superproj/addlicense@$(ADDLICENSE_VERSION)
+
+.PHONY: _install.gofumpt
+_install.gofumpt:
+	@$(GO) install mvdan.cc/gofumpt@$(GO_FUMPT_VERSION)

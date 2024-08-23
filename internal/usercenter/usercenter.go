@@ -1,13 +1,15 @@
 package usercenter
 
 import (
+	"os"
+
+	"github.com/go-kratos/kratos/v2"
+
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	"github.com/costa92/krm/internal/usercenter/server"
 	"github.com/costa92/krm/pkg/log"
 	genericoptions "github.com/costa92/krm/pkg/options"
 	"github.com/costa92/krm/pkg/version"
-	"github.com/go-kratos/kratos/v2"
-	"os"
 )
 
 var (

@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+
 	"github.com/google/wire"
 
 	"github.com/costa92/krm/pkg/authn"

@@ -10,12 +10,13 @@
 package v1
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -331,13 +332,16 @@ func file_usercenter_v1_usercenter_proto_rawDescGZIP() []byte {
 	return file_usercenter_v1_usercenter_proto_rawDescData
 }
 
-var file_usercenter_v1_usercenter_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_usercenter_v1_usercenter_proto_goTypes = []any{
-	(*LoginRequest)(nil),          // 0: usercenter.v1.LoginRequest
-	(*LoginReply)(nil),            // 1: usercenter.v1.LoginReply
-	(*UserReply)(nil),             // 2: usercenter.v1.UserReply
-	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
-}
+var (
+	file_usercenter_v1_usercenter_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+	file_usercenter_v1_usercenter_proto_goTypes  = []any{
+		(*LoginRequest)(nil),          // 0: usercenter.v1.LoginRequest
+		(*LoginReply)(nil),            // 1: usercenter.v1.LoginReply
+		(*UserReply)(nil),             // 2: usercenter.v1.UserReply
+		(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	}
+)
+
 var file_usercenter_v1_usercenter_proto_depIdxs = []int32{
 	3, // 0: usercenter.v1.UserReply.createdAt:type_name -> google.protobuf.Timestamp
 	3, // 1: usercenter.v1.UserReply.updatedAt:type_name -> google.protobuf.Timestamp

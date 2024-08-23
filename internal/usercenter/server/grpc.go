@@ -7,9 +7,10 @@
 package server
 
 import (
-	"github.com/costa92/krm/internal/usercenter/service"
 	"github.com/go-kratos/kratos/v2/middleware"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
+
+	"github.com/costa92/krm/internal/usercenter/service"
 
 	v1 "github.com/costa92/krm/pkg/api/usercenter/v1"
 )

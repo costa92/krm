@@ -7,6 +7,8 @@
 package usercenter
 
 import (
+	"github.com/go-kratos/kratos/v2"
+
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	validation2 "github.com/costa92/krm/internal/pkg/validation"
 	"github.com/costa92/krm/internal/usercenter/biz"
@@ -14,7 +16,6 @@ import (
 	"github.com/costa92/krm/internal/usercenter/service"
 	"github.com/costa92/krm/internal/usercenter/validation"
 	"github.com/costa92/krm/pkg/options"
-	"github.com/go-kratos/kratos/v2"
 )
 
 // Injectors from wire.go:

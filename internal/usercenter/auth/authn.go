@@ -2,18 +2,20 @@ package auth
 
 import (
 	"context"
+	"time"
+
+	"github.com/go-kratos/kratos/v2/errors"
+	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/wire"
+	lru "github.com/hashicorp/golang-lru"
+	"gorm.io/gorm"
+
 	known "github.com/costa92/krm/internal/pkg/known/usercenter"
 	"github.com/costa92/krm/internal/usercenter/model"
 	v1 "github.com/costa92/krm/pkg/api/usercenter/v1"
 	"github.com/costa92/krm/pkg/authn"
 	jwtauthn "github.com/costa92/krm/pkg/authn/jwt"
 	"github.com/costa92/krm/pkg/log"
-	"github.com/go-kratos/kratos/v2/errors"
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/google/wire"
-	lru "github.com/hashicorp/golang-lru"
-	"gorm.io/gorm"
-	"time"
 )
 
 const (
@@ -65,7 +67,7 @@ func NewAuthn(setter TemporarySecretSetter) (*authnImpl, error) {
 	return &authnImpl{setter: setter, secrets: l}, nil
 }
 
-// Verify is used to verify a access token. If the verification
+// Sign Verify is used to verify a access token. If the verification
 // is successful, userID will be returned.
 func (a *authnImpl) Sign(ctx context.Context, userID string) (authn.IToken, error) {
 	expires := time.Now().Add(known.AccessTokenExpire).Unix()

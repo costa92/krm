@@ -1,11 +1,12 @@
 package options
 
 import (
+	"net/http"
+	"net/http/pprof"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/spf13/pflag"
-	"net/http"
-	"net/http/pprof"
 )
 
 var _ IOptions = (*HealthOptions)(nil)

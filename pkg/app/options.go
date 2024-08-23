@@ -2,6 +2,9 @@ package app
 
 import (
 	"fmt"
+	"path/filepath"
+	"strings"
+
 	"github.com/fsnotify/fsnotify"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/spf13/cobra"
@@ -9,8 +12,6 @@ import (
 	"github.com/spf13/viper"
 	"k8s.io/client-go/util/homedir"
 	cliflag "k8s.io/component-base/cli/flag"
-	"path/filepath"
-	"strings"
 )
 
 const configFlagName = "config"

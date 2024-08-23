@@ -14,8 +14,7 @@ import (
 var ProviderSet = wire.NewSet(New, wire.Bind(new(any), new(*validator)))
 
 // validator struct implements the custom validator interface.
-type validator struct {
-}
+type validator struct{}
 
 // New creates and initializes a custom validator.
 // It receives an instance of store.IStore interface as parameter ds

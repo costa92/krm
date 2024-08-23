@@ -1,8 +1,9 @@
 package bootstrap
 
 import (
-	"github.com/go-kratos/kratos/v2"
 	"os"
+
+	"github.com/go-kratos/kratos/v2"
 
 	krtlog "github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
@@ -35,7 +36,7 @@ func NewAppInfo(id, name, version string) AppInfo {
 type AppConfig struct {
 	Info   AppInfo
 	Logger krtlog.Logger
-	//Registrar registry.Registrar
+	// Registrar registry.Registrar
 }
 
 // NewApp creates a new kratos app.
@@ -46,7 +47,7 @@ func NewApp(c AppConfig, servers ...transport.Server) *kratos.App {
 		kratos.Version(c.Info.Version),
 		kratos.Metadata(c.Info.Metadata),
 		kratos.Logger(c.Logger),
-		//kratos.Registrar(c.Registrar),
+		// kratos.Registrar(c.Registrar),
 		kratos.Server(servers...),
 	)
 }

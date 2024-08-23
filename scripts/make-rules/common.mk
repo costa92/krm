@@ -134,10 +134,6 @@ $(info ===========> Installing $(1)@$(2))
 $(GO) install $(1)@$(2)
 endef
 
-
-
-
-
 SCRIPTS_DIR=$(KRM_ROOT)/scripts
 GENERATED_DOCKERFILE_DIR=$(KRM_ROOT)/build/docker
 

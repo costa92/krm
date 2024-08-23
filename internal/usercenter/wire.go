@@ -4,6 +4,9 @@
 package usercenter
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/google/wire"
+
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	"github.com/costa92/krm/internal/pkg/validation"
 	"github.com/costa92/krm/internal/usercenter/biz"
@@ -11,8 +14,6 @@ import (
 	"github.com/costa92/krm/internal/usercenter/service"
 	customvalidation "github.com/costa92/krm/internal/usercenter/validation"
 	genericoptions "github.com/costa92/krm/pkg/options"
-	"github.com/go-kratos/kratos/v2"
-	"github.com/google/wire"
 )
 
 //go:generate go run github.com/google/wire/cmd/wire

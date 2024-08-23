@@ -1,9 +1,10 @@
 package service
 
 import (
+	"github.com/google/wire"
+
 	"github.com/costa92/krm/internal/usercenter/biz"
 	v1 "github.com/costa92/krm/pkg/api/usercenter/v1"
-	"github.com/google/wire"
 )
 
 // ProviderSet is a set of service providers, used for dependency injection.

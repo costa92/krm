@@ -3,8 +3,9 @@ package version
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gosuri/uitable"
 	"runtime"
+
+	"github.com/gosuri/uitable"
 )
 
 var (

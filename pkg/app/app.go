@@ -2,17 +2,19 @@ package app
 
 import (
 	"fmt"
-	"github.com/costa92/krm/pkg/log"
-	genericoptions "github.com/costa92/krm/pkg/options"
-	"github.com/costa92/krm/pkg/version"
+	"os"
+	"runtime"
+	"strings"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"k8s.io/component-base/cli"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/component-base/term"
-	"os"
-	"runtime"
-	"strings"
+
+	"github.com/costa92/krm/pkg/log"
+	genericoptions "github.com/costa92/krm/pkg/options"
+	"github.com/costa92/krm/pkg/version"
 )
 
 type App struct {
