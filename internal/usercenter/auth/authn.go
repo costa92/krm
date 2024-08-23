@@ -4,6 +4,7 @@ import (
 	"context"
 	known "github.com/costa92/krm/internal/pkg/known/usercenter"
 	"github.com/costa92/krm/internal/usercenter/model"
+	v1 "github.com/costa92/krm/pkg/api/usercenter/v1"
 	"github.com/costa92/krm/pkg/authn"
 	jwtauthn "github.com/costa92/krm/pkg/authn/jwt"
 	"github.com/costa92/krm/pkg/log"
@@ -153,8 +154,7 @@ func (a *authnImpl) GetSecret(key string) (*model.SecretM, error) {
 	secret, err := a.setter.Get(context.Background(), key)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			//return nil, v1.ErrorSecretNotFound(err.Error())
-			return nil, errors.Unauthorized(reasonUnauthorized, err.Error())
+			return nil, v1.ErrorSecretNotFound(err.Error())
 		}
 
 		return nil, err
