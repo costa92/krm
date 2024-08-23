@@ -1,6 +1,7 @@
 package options
 
 import (
+	known "github.com/costa92/krm/internal/pkg/known/usercenter"
 	"github.com/costa92/krm/internal/usercenter"
 	"github.com/costa92/krm/pkg/app"
 	"github.com/costa92/krm/pkg/log"
@@ -25,8 +26,12 @@ type Options struct {
 	HTTPOptions *genericoptions.HTTPOptions `json:"http" mapstructure:"http"`
 	// TLS options for configuring TLS related options.
 	TLSOptions *genericoptions.TLSOptions `json:"tls" mapstructure:"tls"`
+	// Redis options for configuring Redis related options.
+	RedisOptions *genericoptions.RedisOptions `json:"redis" mapstructure:"redis"`
 	// Metrics options for configuring metric related options.
 	Metrics *genericoptions.MetricsOptions `json:"metrics" mapstructure:"metrics"`
+	// JWT options for configuring JWT related options.
+	JWTOptions *genericoptions.JWTOptions `json:"jwt" mapstructure:"jwt"`
 	// Log options for configuring log related options.
 	Log *log.Options `json:"log" mapstructure:"log"`
 }
@@ -34,11 +39,13 @@ type Options struct {
 // NewOptions returns initialized Options.
 func NewOptions() *Options {
 	o := &Options{
-		GRPCOptions: genericoptions.NewGRPCOptions(),
-		HTTPOptions: genericoptions.NewHTTPOptions(),
-		TLSOptions:  genericoptions.NewTLSOptions(),
-		Metrics:     genericoptions.NewMetricsOptions(),
-		Log:         log.NewOptions(),
+		GRPCOptions:  genericoptions.NewGRPCOptions(),
+		HTTPOptions:  genericoptions.NewHTTPOptions(),
+		TLSOptions:   genericoptions.NewTLSOptions(),
+		RedisOptions: genericoptions.NewRedisOptions(),
+		JWTOptions:   genericoptions.NewJWTOptions(),
+		Metrics:      genericoptions.NewMetricsOptions(),
+		Log:          log.NewOptions(),
 	}
 
 	return o
@@ -50,6 +57,8 @@ func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	o.HTTPOptions.AddFlags(fss.FlagSet("http"))
 	o.TLSOptions.AddFlags(fss.FlagSet("tls"))
 	o.Metrics.AddFlags(fss.FlagSet("metrics"))
+	o.JWTOptions.AddFlags(fss.FlagSet("jwt"))
+	o.RedisOptions.AddFlags(fss.FlagSet("redis"))
 	o.Log.AddFlags(fss.FlagSet("log"))
 
 	return fss
@@ -60,12 +69,15 @@ func (o *Options) ApplyTo(c *usercenter.Config) error {
 	c.GRPCOptions = o.GRPCOptions
 	c.HTTPOptions = o.HTTPOptions
 	c.TLSOptions = o.TLSOptions
+	c.RedisOptions = o.RedisOptions
+	c.JWTOptions = o.JWTOptions
 
 	return nil
 }
 
 // Complete completes all the required options.
 func (o *Options) Complete() error {
+	o.JWTOptions.Expired = known.RefreshTokenExpire
 	return nil
 }
 
@@ -75,6 +87,8 @@ func (o *Options) Validate() error {
 	errs = append(errs, o.GRPCOptions.Validate()...)
 	errs = append(errs, o.HTTPOptions.Validate()...)
 	errs = append(errs, o.TLSOptions.Validate()...)
+	errs = append(errs, o.RedisOptions.Validate()...)
+	errs = append(errs, o.JWTOptions.Validate()...)
 	errs = append(errs, o.Metrics.Validate()...)
 	errs = append(errs, o.Log.Validate()...)
 	return utilerrors.NewAggregate(errs)

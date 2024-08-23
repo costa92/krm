@@ -10,6 +10,7 @@ import (
 	"github.com/costa92/krm/internal/usercenter/server"
 	"github.com/costa92/krm/internal/usercenter/service"
 	customvalidation "github.com/costa92/krm/internal/usercenter/validation"
+	genericoptions "github.com/costa92/krm/pkg/options"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/google/wire"
 )
@@ -19,6 +20,8 @@ import (
 func wireApp(
 	bootstrap.AppInfo,
 	*server.Config,
+	*genericoptions.JWTOptions,
+	*genericoptions.RedisOptions,
 ) (*kratos.App, func(), error) {
 	wire.Build(
 		bootstrap.ProviderSet,

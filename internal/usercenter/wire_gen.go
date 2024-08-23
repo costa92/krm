@@ -13,12 +13,13 @@ import (
 	"github.com/costa92/krm/internal/usercenter/server"
 	"github.com/costa92/krm/internal/usercenter/service"
 	"github.com/costa92/krm/internal/usercenter/validation"
+	"github.com/costa92/krm/pkg/options"
 	"github.com/go-kratos/kratos/v2"
 )
 
 // Injectors from wire.go:
 
-func wireApp(appInfo bootstrap.AppInfo, config *server.Config) (*kratos.App, func(), error) {
+func wireApp(appInfo bootstrap.AppInfo, config *server.Config, jwtOptions *options.JWTOptions, redisOptions *options.RedisOptions) (*kratos.App, func(), error) {
 	logger := bootstrap.NewLogger(appInfo)
 	appConfig := bootstrap.AppConfig{
 		Info:   appInfo,

@@ -20,9 +20,11 @@ var (
 
 // Config represents the configuration of the service.
 type Config struct {
-	GRPCOptions *genericoptions.GRPCOptions
-	HTTPOptions *genericoptions.HTTPOptions
-	TLSOptions  *genericoptions.TLSOptions
+	GRPCOptions  *genericoptions.GRPCOptions
+	HTTPOptions  *genericoptions.HTTPOptions
+	TLSOptions   *genericoptions.TLSOptions
+	JWTOptions   *genericoptions.JWTOptions
+	RedisOptions *genericoptions.RedisOptions
 }
 
 // Complete fills in any fields not set that are required to have valid data. It's mutating the receiver.
@@ -45,9 +47,7 @@ func (c completedConfig) New(stopCh <-chan struct{}) (*Server, error) {
 		TLS:  *c.TLSOptions,
 	}
 	// Initialize Kratos application with the provided configurations.
-	app, cleanup, err := wireApp(
-		appInfo,
-		conf)
+	app, cleanup, err := wireApp(appInfo, conf, c.JWTOptions, c.RedisOptions)
 	if err != nil {
 		return nil, err
 	}
