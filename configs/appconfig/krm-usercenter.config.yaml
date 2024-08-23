@@ -1,0 +1,50 @@
+
+# krm-usercenter 服务配置文件
+http:
+  addr: 127.0.0.1:50843 # HTTP 服务监听地址
+grpc:
+  addr: 127.0.0.1:50090 # gRPC 服务监听地址
+tls:
+  use-tls: false # 是否启用 TLS
+  cert:  # TLS 证书路径
+  key:  # TLS 私钥路径
+mysql:
+  host: 127.0.0.1:3306 # 数据库主机地址
+  database: test # 数据库名称
+  username: add # 数据库用户名
+  password: 122 # 数据库密码
+  log-level: 1 # 数据库日志级别，1 为最低，4 为最高
+redis:
+  addr: 127.0.0.1:6379 # Redis 地址
+  database: 0 # Redis 数据库索引
+  password:  # Redis 密码
+etcd:
+  endpoints:  # etcd 服务地址
+kafka:
+  brokers: 127.0.0.1:9092
+  topic: audit
+  timeout: 3s
+  # tls:
+  #mechanism:
+  #username:
+  #password:
+  #algorithm:
+  #compressed:
+  writer: # 使用默认值即可，不需要在 manifests/env.local 中配置
+    max-attempts: 10
+    required-acks: 1
+    async: true
+    batch-size: 100
+    batch-timeout: 1s
+    batch-bytes: 1024
+jaeger:
+  env: test # Jaeger 环境
+  server:  # Jaeger 服务地址
+  service-name: krm-usercenter  # Jaeger 服务名称
+log: # 使用默认值即可，不需要在 manifests/env.local 中配置
+  level: debug # 日志级别，优先级从低到高依次为：debug, info, warn, error, dpanic, panic, fatal。
+  format: console # 支持的日志输出格式，目前支持 console 和 json 两种。console 其实就是 text 格式。
+  enable-color: true # 是否开启颜色输出，true: 是，false: 否
+  disable-caller: false # 是否开启 caller，如果开启会在日志中显示调用日志所在的文件、函数和行号
+  disable-stacktrace: false # 是否再 panic 及以上级别禁止打印堆栈信息
+  output-paths: [stdout] # 多个输出，逗号分开。stdout：标准输出，
