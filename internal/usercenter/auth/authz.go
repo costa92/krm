@@ -43,7 +43,7 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act || r.sub == "root"`
 )
 
 // AuthzProviderSet defines a wire set for authorization.
-var AuthzProviderSet = wire.NewSet(NewAuthz, wire.Bind(new(AuthzInterface), new(*authzImpl)))
+var AuthzProviderSet = wire.NewSet(NewAuthz, wire.Bind(new(AuthzInterface), new(*authzImpl)), LoggerProviderSet)
 
 // AuthzInterface defines the interface for authorization.
 type AuthzInterface interface {

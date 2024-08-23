@@ -9,6 +9,7 @@ package usercenter
 import (
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	validation2 "github.com/costa92/krm/internal/pkg/validation"
+	"github.com/costa92/krm/internal/usercenter/auth"
 	"github.com/costa92/krm/internal/usercenter/biz"
 	"github.com/costa92/krm/internal/usercenter/server"
 	"github.com/costa92/krm/internal/usercenter/service"
@@ -21,7 +22,7 @@ import (
 
 // Injectors from wire.go:
 
-func wireApp(appInfo bootstrap.AppInfo, config *server.Config, mySQLOptions *db.MySQLOptions, jwtOptions *options.JWTOptions, redisOptions *options.RedisOptions) (*kratos.App, func(), error) {
+func wireApp(appInfo bootstrap.AppInfo, config *server.Config, mySQLOptions *db.MySQLOptions, jwtOptions *options.JWTOptions, redisOptions *options.RedisOptions, kafkaOptions *options.KafkaOptions) (*kratos.App, func(), error) {
 	logger := bootstrap.NewLogger(appInfo)
 	appConfig := bootstrap.AppConfig{
 		Info:   appInfo,
@@ -32,10 +33,32 @@ func wireApp(appInfo bootstrap.AppInfo, config *server.Config, mySQLOptions *db.
 		return nil, nil, err
 	}
 	datastore := store.NewStore(gormDB)
-	bizBiz := biz.NewBiz(datastore)
+	authenticator, cleanup, err := NewAuthenticator(jwtOptions, redisOptions)
+	if err != nil {
+		return nil, nil, err
+	}
+	secretSetter := store.NewSecretSetter(datastore)
+	authnImpl, err := auth.NewAuthn(secretSetter)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	kafkaLogger, err := auth.NewLogger(kafkaOptions)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	authzImpl, err := auth.NewAuthz(gormDB, redisOptions, kafkaLogger)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	authAuth := auth.NewAuth(authnImpl, authzImpl)
+	bizBiz := biz.NewBiz(datastore, authenticator, authAuth)
 	userCenterService := service.NewUserCenterService(bizBiz)
 	validator, err := validation.New()
 	if err != nil {
+		cleanup()
 		return nil, nil, err
 	}
 	validationValidator := validation2.New(validator)
@@ -45,5 +68,6 @@ func wireApp(appInfo bootstrap.AppInfo, config *server.Config, mySQLOptions *db.
 	v2 := server.NewServers(httpServer, grpcServer)
 	app := bootstrap.NewApp(appConfig, v2...)
 	return app, func() {
+		cleanup()
 	}, nil
 }

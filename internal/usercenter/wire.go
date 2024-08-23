@@ -9,6 +9,7 @@ import (
 
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	"github.com/costa92/krm/internal/pkg/validation"
+	"github.com/costa92/krm/internal/usercenter/auth"
 	"github.com/costa92/krm/internal/usercenter/biz"
 	"github.com/costa92/krm/internal/usercenter/server"
 	"github.com/costa92/krm/internal/usercenter/service"
@@ -26,6 +27,7 @@ func wireApp(
 	*db.MySQLOptions,
 	*genericoptions.JWTOptions,
 	*genericoptions.RedisOptions,
+	*genericoptions.KafkaOptions,
 ) (*kratos.App, func(), error) {
 	wire.Build(
 		bootstrap.ProviderSet,
@@ -34,6 +36,9 @@ func wireApp(
 		db.ProviderSet,
 		biz.ProviderSet,
 		service.ProviderSet,
+		auth.ProviderSet,
+		store.SetterProviderSet,
+		NewAuthenticator,
 		validation.ProviderSet,
 		customvalidation.ProviderSet,
 	)

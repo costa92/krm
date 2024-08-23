@@ -29,6 +29,7 @@ type Config struct {
 	HTTPOptions  *genericoptions.HTTPOptions
 	TLSOptions   *genericoptions.TLSOptions
 	MySQLOptions *genericoptions.MySQLOptions
+	KafkaOptions *genericoptions.KafkaOptions
 	JWTOptions   *genericoptions.JWTOptions
 	RedisOptions *genericoptions.RedisOptions
 }
@@ -57,7 +58,7 @@ func (c completedConfig) New(stopCh <-chan struct{}) (*Server, error) {
 	_ = copier.Copy(&dbOptions, c.MySQLOptions)
 
 	// Initialize Kratos application with the provided configurations.
-	app, cleanup, err := wireApp(appInfo, conf, &dbOptions, c.JWTOptions, c.RedisOptions)
+	app, cleanup, err := wireApp(appInfo, conf, &dbOptions, c.JWTOptions, c.RedisOptions, c.KafkaOptions)
 	if err != nil {
 		return nil, err
 	}

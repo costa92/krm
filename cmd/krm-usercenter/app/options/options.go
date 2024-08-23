@@ -35,6 +35,8 @@ type Options struct {
 	Metrics *genericoptions.MetricsOptions `json:"metrics" mapstructure:"metrics"`
 	// JWT options for configuring JWT related options.
 	JWTOptions *genericoptions.JWTOptions `json:"jwt" mapstructure:"jwt"`
+	// Kafka options for configuring Kafka related options.
+	KafkaOptions *genericoptions.KafkaOptions `json:"kafka" mapstructure:"kafka"`
 	// Log options for configuring log related options.
 	Log *log.Options `json:"log" mapstructure:"log"`
 }
@@ -48,6 +50,7 @@ func NewOptions() *Options {
 		MysqlOptions: genericoptions.NewMySQLOptions(),
 		RedisOptions: genericoptions.NewRedisOptions(),
 		JWTOptions:   genericoptions.NewJWTOptions(),
+		KafkaOptions: genericoptions.NewKafkaOptions(),
 		Metrics:      genericoptions.NewMetricsOptions(),
 		Log:          log.NewOptions(),
 	}
@@ -64,6 +67,7 @@ func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	o.JWTOptions.AddFlags(fss.FlagSet("jwt"))
 	o.RedisOptions.AddFlags(fss.FlagSet("redis"))
 	o.MysqlOptions.AddFlags(fss.FlagSet("mysql"))
+	o.KafkaOptions.AddFlags(fss.FlagSet("kafka"))
 	o.Log.AddFlags(fss.FlagSet("log"))
 
 	return fss
@@ -77,6 +81,7 @@ func (o *Options) ApplyTo(c *usercenter.Config) error {
 	c.MySQLOptions = o.MysqlOptions
 	c.RedisOptions = o.RedisOptions
 	c.JWTOptions = o.JWTOptions
+	c.KafkaOptions = o.KafkaOptions
 	return nil
 }
 
@@ -95,6 +100,7 @@ func (o *Options) Validate() error {
 	errs = append(errs, o.MysqlOptions.Validate()...)
 	errs = append(errs, o.RedisOptions.Validate()...)
 	errs = append(errs, o.JWTOptions.Validate()...)
+	errs = append(errs, o.KafkaOptions.Validate()...)
 	errs = append(errs, o.Metrics.Validate()...)
 	errs = append(errs, o.Log.Validate()...)
 	return utilerrors.NewAggregate(errs)
