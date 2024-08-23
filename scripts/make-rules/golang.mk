@@ -28,6 +28,7 @@ ifeq (${BINS},) # 如果BINS为空
   $(error Could not determine BINS, set CMD_DIRS or run in source dir)
 endif
 
+# https://konglingfei.com/onex/devel/devel.html#%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E6%BA%90%E7%A0%81
 # make go.build apiserver linux_amd64
 .PHONY: go.build.verify
 go.build.verify: ## Verify supported go versions.
