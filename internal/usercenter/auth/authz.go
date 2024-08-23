@@ -43,7 +43,7 @@ m = g(r.sub, p.sub) && r.obj == p.obj && r.act == p.act || r.sub == "root"`
 )
 
 // AuthzProviderSet defines a wire set for authorization.
-var AuthzProviderSet = wire.NewSet(NewAuthz, wire.Bind(new(AuthzInterface), new(*authzImpl)), LoggerProviderSet)
+var AuthzProviderSet = wire.NewSet(NewAuthz, wire.Bind(new(AuthzInterface), new(*authzImpl)))
 
 // AuthzInterface defines the interface for authorization.
 type AuthzInterface interface {
@@ -111,7 +111,7 @@ func NewAuthz(db *gorm.DB, redisOpts *genericoptions.RedisOptions, logger clog.L
 		log.Errorw(err, "Failed to load casbin policy")
 		return nil, err
 	}
-	// Start auto-loading the policy every minute.
+	// Start autoloading the policy every minute.
 	enforcer.StartAutoLoadPolicy(time.Minute)
 
 	// Create a new authzImpl instance.

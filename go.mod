@@ -45,6 +45,7 @@ require (
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/yaml.v3 v3.0.1
+	gorm.io/driver/mysql v1.5.1-0.20230509030346-3715c134c25b
 	gorm.io/gorm v1.25.11
 	k8s.io/apimachinery v0.31.0
 	k8s.io/apiserver v0.31.0
@@ -202,7 +203,6 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	gorm.io/driver/mysql v1.5.1-0.20230509030346-3715c134c25b // indirect
 	gorm.io/driver/postgres v1.4.5 // indirect
 	gorm.io/driver/sqlserver v1.4.1 // indirect
 	gorm.io/plugin/dbresolver v1.3.0 // indirect

@@ -3,10 +3,13 @@ package usercenter
 import (
 	"os"
 
+	"github.com/jinzhu/copier"
+
 	"github.com/go-kratos/kratos/v2"
 
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	"github.com/costa92/krm/internal/usercenter/server"
+	"github.com/costa92/krm/pkg/db"
 	"github.com/costa92/krm/pkg/log"
 	genericoptions "github.com/costa92/krm/pkg/options"
 	"github.com/costa92/krm/pkg/version"
@@ -25,6 +28,7 @@ type Config struct {
 	GRPCOptions  *genericoptions.GRPCOptions
 	HTTPOptions  *genericoptions.HTTPOptions
 	TLSOptions   *genericoptions.TLSOptions
+	MySQLOptions *genericoptions.MySQLOptions
 	JWTOptions   *genericoptions.JWTOptions
 	RedisOptions *genericoptions.RedisOptions
 }
@@ -48,8 +52,12 @@ func (c completedConfig) New(stopCh <-chan struct{}) (*Server, error) {
 		GRPC: *c.GRPCOptions,
 		TLS:  *c.TLSOptions,
 	}
+
+	var dbOptions db.MySQLOptions
+	_ = copier.Copy(&dbOptions, c.MySQLOptions)
+
 	// Initialize Kratos application with the provided configurations.
-	app, cleanup, err := wireApp(appInfo, conf, c.JWTOptions, c.RedisOptions)
+	app, cleanup, err := wireApp(appInfo, conf, &dbOptions, c.JWTOptions, c.RedisOptions)
 	if err != nil {
 		return nil, err
 	}

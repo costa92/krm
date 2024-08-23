@@ -27,6 +27,8 @@ type Options struct {
 	HTTPOptions *genericoptions.HTTPOptions `json:"http" mapstructure:"http"`
 	// TLS options for configuring TLS related options.
 	TLSOptions *genericoptions.TLSOptions `json:"tls" mapstructure:"tls"`
+	// Mysql options for configuring Mysql related options.
+	MysqlOptions *genericoptions.MySQLOptions `json:"mysql" mapstructure:"mysql"`
 	// Redis options for configuring Redis related options.
 	RedisOptions *genericoptions.RedisOptions `json:"redis" mapstructure:"redis"`
 	// Metrics options for configuring metric related options.
@@ -43,6 +45,7 @@ func NewOptions() *Options {
 		GRPCOptions:  genericoptions.NewGRPCOptions(),
 		HTTPOptions:  genericoptions.NewHTTPOptions(),
 		TLSOptions:   genericoptions.NewTLSOptions(),
+		MysqlOptions: genericoptions.NewMySQLOptions(),
 		RedisOptions: genericoptions.NewRedisOptions(),
 		JWTOptions:   genericoptions.NewJWTOptions(),
 		Metrics:      genericoptions.NewMetricsOptions(),
@@ -60,6 +63,7 @@ func (o *Options) Flags() (fss cliflag.NamedFlagSets) {
 	o.Metrics.AddFlags(fss.FlagSet("metrics"))
 	o.JWTOptions.AddFlags(fss.FlagSet("jwt"))
 	o.RedisOptions.AddFlags(fss.FlagSet("redis"))
+	o.MysqlOptions.AddFlags(fss.FlagSet("mysql"))
 	o.Log.AddFlags(fss.FlagSet("log"))
 
 	return fss
@@ -70,9 +74,9 @@ func (o *Options) ApplyTo(c *usercenter.Config) error {
 	c.GRPCOptions = o.GRPCOptions
 	c.HTTPOptions = o.HTTPOptions
 	c.TLSOptions = o.TLSOptions
+	c.MySQLOptions = o.MysqlOptions
 	c.RedisOptions = o.RedisOptions
 	c.JWTOptions = o.JWTOptions
-
 	return nil
 }
 
@@ -88,6 +92,7 @@ func (o *Options) Validate() error {
 	errs = append(errs, o.GRPCOptions.Validate()...)
 	errs = append(errs, o.HTTPOptions.Validate()...)
 	errs = append(errs, o.TLSOptions.Validate()...)
+	errs = append(errs, o.MysqlOptions.Validate()...)
 	errs = append(errs, o.RedisOptions.Validate()...)
 	errs = append(errs, o.JWTOptions.Validate()...)
 	errs = append(errs, o.Metrics.Validate()...)

@@ -12,7 +12,9 @@ import (
 	"github.com/costa92/krm/internal/usercenter/biz"
 	"github.com/costa92/krm/internal/usercenter/server"
 	"github.com/costa92/krm/internal/usercenter/service"
+	"github.com/costa92/krm/internal/usercenter/store"
 	customvalidation "github.com/costa92/krm/internal/usercenter/validation"
+	"github.com/costa92/krm/pkg/db"
 	genericoptions "github.com/costa92/krm/pkg/options"
 )
 
@@ -21,12 +23,15 @@ import (
 func wireApp(
 	bootstrap.AppInfo,
 	*server.Config,
+	*db.MySQLOptions,
 	*genericoptions.JWTOptions,
 	*genericoptions.RedisOptions,
 ) (*kratos.App, func(), error) {
 	wire.Build(
 		bootstrap.ProviderSet,
 		server.ProviderSet,
+		store.ProviderSet,
+		db.ProviderSet,
 		biz.ProviderSet,
 		service.ProviderSet,
 		validation.ProviderSet,

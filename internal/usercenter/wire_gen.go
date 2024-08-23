@@ -7,26 +7,32 @@
 package usercenter
 
 import (
-	"github.com/go-kratos/kratos/v2"
-
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	validation2 "github.com/costa92/krm/internal/pkg/validation"
 	"github.com/costa92/krm/internal/usercenter/biz"
 	"github.com/costa92/krm/internal/usercenter/server"
 	"github.com/costa92/krm/internal/usercenter/service"
+	"github.com/costa92/krm/internal/usercenter/store"
 	"github.com/costa92/krm/internal/usercenter/validation"
+	"github.com/costa92/krm/pkg/db"
 	"github.com/costa92/krm/pkg/options"
+	"github.com/go-kratos/kratos/v2"
 )
 
 // Injectors from wire.go:
 
-func wireApp(appInfo bootstrap.AppInfo, config *server.Config, jwtOptions *options.JWTOptions, redisOptions *options.RedisOptions) (*kratos.App, func(), error) {
+func wireApp(appInfo bootstrap.AppInfo, config *server.Config, mySQLOptions *db.MySQLOptions, jwtOptions *options.JWTOptions, redisOptions *options.RedisOptions) (*kratos.App, func(), error) {
 	logger := bootstrap.NewLogger(appInfo)
 	appConfig := bootstrap.AppConfig{
 		Info:   appInfo,
 		Logger: logger,
 	}
-	bizBiz := biz.NewBiz()
+	gormDB, err := db.NewMySQL(mySQLOptions)
+	if err != nil {
+		return nil, nil, err
+	}
+	datastore := store.NewStore(gormDB)
+	bizBiz := biz.NewBiz(datastore)
 	userCenterService := service.NewUserCenterService(bizBiz)
 	validator, err := validation.New()
 	if err != nil {
