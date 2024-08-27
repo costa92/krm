@@ -17,7 +17,7 @@ mysql:
 redis:
   addr: 192.168.58.2:30001 # Redis 地址
   database: 0 # Redis 数据库索引
-  password: onex(#)666 # Redis 密码
+  password: krm(#)666 # Redis 密码
 etcd:
   endpoints:  # etcd 服务地址
 kafka:
