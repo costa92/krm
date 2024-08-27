@@ -192,8 +192,8 @@ func (a *App) buildCommand() {
 	// In all cases error printing is done below.
 	cmd.SilenceErrors = true
 
-	cmd.SetOutput(os.Stdout)
 	cmd.SetErr(os.Stderr)
+	cmd.SetOut(os.Stderr)
 	cmd.Flags().SortFlags = true
 
 	var fss cliflag.NamedFlagSets

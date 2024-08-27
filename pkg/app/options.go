@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/costa92/krm/pkg/log"
 	"github.com/fsnotify/fsnotify"
-	"github.com/go-kratos/kratos/v2/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
