@@ -124,3 +124,7 @@ _install.addlicense: ## Install addlicense.
 .PHONY: _install.gofumpt
 _install.gofumpt:
 	@$(GO) install mvdan.cc/gofumpt@$(GO_FUMPT_VERSION)
+
+.PHONY: _install.kafkactl
+_install.kafkactl: ## Install kafkactl command line tool.
+	@$(GO) install github.com/deviceinsight/kafkactl/v5@$(KAFKACTL_VERSION)

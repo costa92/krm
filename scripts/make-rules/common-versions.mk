@@ -7,6 +7,7 @@ BUF_VERSION ?= v1.28.1
 GO_SWAGGER_VERSION ?= v0.31.0
 GO_IMPORTS_VERSION ?= v0.24.0
 GO_FUMPT_VERSION ?= v0.7.0
+KAFKACTL_VERSION ?= v5.3.0
 
 # call get_go_version,github.com/golang/mock  # 获取golang/mock的版本
 MOCKGEN_VERSION ?= $(call get_go_version,github.com/golang/mock)
