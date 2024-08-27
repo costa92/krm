@@ -3,6 +3,10 @@ package server
 import (
 	"context"
 	"encoding/json"
+	"github.com/costa92/krm/internal/pkg/middleware/authn/jwt"
+	"github.com/costa92/krm/pkg/authn"
+	"github.com/go-kratos/kratos/v2/middleware/metadata"
+	"github.com/go-kratos/kratos/v2/middleware/selector"
 
 	"github.com/go-kratos/kratos/v2/middleware/ratelimit"
 
@@ -33,7 +37,7 @@ func NewServers(hs *http.Server, gs *grpc.Server) []transport.Server {
 }
 
 // NewMiddlewares return middlewares used by grpc and http server both.
-func NewMiddlewares(logger krtlog.Logger, v validate.IValidator) []middleware.Middleware {
+func NewMiddlewares(logger krtlog.Logger, a authn.Authenticator, v validate.IValidator) []middleware.Middleware {
 	return []middleware.Middleware{
 		recovery.Recovery(
 			recovery.WithHandler(func(ctx context.Context, rq, err any) error {
@@ -46,7 +50,8 @@ func NewMiddlewares(logger krtlog.Logger, v validate.IValidator) []middleware.Mi
 		i18nmw.Translator(i18n.WithLanguage(language.English), i18n.WithFS(locales.Locales)),
 		ratelimit.Server(),
 		// tracing.Server(),
-		// selector.Server(jwt.Server(a)).Match(NewWhiteListMatcher()).Build(),
+		metadata.Server(),
+		selector.Server(jwt.Server(a)).Match(NewWhiteListMatcher()).Build(),
 		validate.Validator(v),
 		logging.Server(logger),
 	}

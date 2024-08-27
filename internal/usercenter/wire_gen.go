@@ -62,7 +62,7 @@ func wireApp(appInfo bootstrap.AppInfo, config *server.Config, mySQLOptions *db.
 		return nil, nil, err
 	}
 	validationValidator := validation2.New(validator)
-	v := server.NewMiddlewares(logger, validationValidator)
+	v := server.NewMiddlewares(logger, authenticator, validationValidator)
 	httpServer := server.NewHTTPServer(config, userCenterService, v)
 	grpcServer := server.NewGRPCServer(config, userCenterService, v)
 	v2 := server.NewServers(httpServer, grpcServer)
