@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   # 这里名字不能叫 kafka，否则 kafka pod 会一直 crash
-  name: onex-kafka
+  name: krm-kafka
 spec:
   type: NodePort
   selector:

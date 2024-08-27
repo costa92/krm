@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: kafka
-  serviceName: onex-kafka
+  serviceName: krm-kafka
   template:
     metadata:
       labels:

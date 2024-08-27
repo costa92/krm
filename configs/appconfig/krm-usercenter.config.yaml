@@ -9,19 +9,19 @@ tls:
   cert:  # TLS 证书路径
   key:  # TLS 私钥路径
 mysql:
-  host: 127.0.0.1:3306 # 数据库主机地址
-  database: test # 数据库名称
-  username: add # 数据库用户名
-  password: 122 # 数据库密码
+  host: 192.168.58.2:30000 # 数据库主机地址
+  database: krm # 数据库名称
+  username: root # 数据库用户名
+  password: krm(#)666 # 数据库密码
   log-level: 1 # 数据库日志级别，1 为最低，4 为最高
 redis:
-  addr: 127.0.0.1:6379 # Redis 地址
+  addr: 192.168.58.2:30001 # Redis 地址
   database: 0 # Redis 数据库索引
-  password:  # Redis 密码
+  password: onex(#)666 # Redis 密码
 etcd:
   endpoints:  # etcd 服务地址
 kafka:
-  brokers: 127.0.0.1:9092
+  brokers: 192.168.58.2:30006
   topic: audit
   timeout: 3s
   # tls:
