@@ -2,9 +2,10 @@ package store
 
 import (
 	"context"
+	"sync"
+
 	"github.com/google/wire"
 	"gorm.io/gorm"
-	"sync"
 )
 
 // ProviderSet is a Wire provider set that initializes new datastore instances

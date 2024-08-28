@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"encoding/json"
+
 	"github.com/costa92/krm/internal/pkg/middleware/authn/jwt"
 	"github.com/costa92/krm/pkg/authn"
 	"github.com/go-kratos/kratos/v2/middleware/metadata"
