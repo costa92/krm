@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package authn
 
 import (
@@ -17,10 +15,13 @@ import (
 type IToken interface {
 	// Get token string.
 	GetToken() string
+
 	// Get token type.
 	GetTokenType() string
+
 	// Get token expiration timestamp.
 	GetExpiresAt() int64
+
 	// JSON encoding
 	EncodeToJSON() ([]byte, error)
 }

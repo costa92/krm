@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package store
 
 import (
@@ -30,7 +28,7 @@ var (
 
 // NewSecretSetter initializes a new secretSetter instance using the provided datastore.
 func NewSecretSetter(ds *datastore) *secretSetter {
-	return &secretSetter{ds}
+	return &secretSetter{ds: ds}
 }
 
 // Get retrieves a secret record from the datastore based on userID and secretID.

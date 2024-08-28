@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
@@ -12,7 +10,6 @@ import (
 	"github.com/redis/go-redis/extra/rediscensus/v9"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/pflag"
-
 	"github.com/superproj/onex/pkg/db"
 )
 
@@ -31,6 +28,7 @@ type RedisOptions struct {
 	WriteTimeout time.Duration `json:"write-timeout" mapstructure:"write-timeout"`
 	PoolTimeout  time.Duration `json:"pool-time" mapstructure:"pool-time"`
 	PoolSize     int           `json:"pool-size" mapstructure:"pool-size"`
+
 	// tracing switch
 	EnableTrace bool `json:"enable-trace" mapstructure:"enable-trace"`
 }

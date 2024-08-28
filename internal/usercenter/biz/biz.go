@@ -1,16 +1,17 @@
 package biz
 
 import (
+	"github.com/google/wire"
+
 	"github.com/costa92/krm/internal/usercenter/auth"
 	"github.com/costa92/krm/internal/usercenter/store"
 	"github.com/costa92/krm/pkg/authn"
-	"github.com/google/wire"
 )
 
 // ProviderSet contains providers for creating instances of the biz struct.
 var ProviderSet = wire.NewSet(NewBiz, wire.Bind(new(IBiz), new(*biz)))
 
-type IBiz interface{}
+type IBiz any
 
 type biz struct {
 	ds    store.IStore

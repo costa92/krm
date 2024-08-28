@@ -24,8 +24,10 @@ type App struct {
 	run         RunFunc
 	cmd         *cobra.Command
 	args        cobra.PositionalArgs
+
 	// +optional
 	healthCheckFunc HealthCheckFunc
+
 	// +optional
 	options CliOptions
 

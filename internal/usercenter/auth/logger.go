@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package auth
 
 import (
@@ -27,6 +25,7 @@ var LoggerProviderSet = wire.NewSet(NewLogger, wire.Bind(new(clog.Logger), new(*
 type kafkaLogger struct {
 	// enabled is an atomic boolean indicating whether the logger is enabled.
 	enabled int32
+
 	// writer is the Kafka writer used to write log messages.
 	writer *kafka.Writer
 }

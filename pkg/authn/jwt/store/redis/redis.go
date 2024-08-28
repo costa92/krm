@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package redis
 
 import (
@@ -20,6 +18,7 @@ type Config struct {
 	Username string
 	Password string
 	Database int
+
 	// Sore key prefix.
 	KeyPrefix string
 }

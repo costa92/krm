@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/go-kratos/kratos/v2"
-
 	krtlog "github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/google/wire"

@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
@@ -23,7 +21,8 @@ var _ IOptions = (*JaegerOptions)(nil)
 // JaegerOptions defines options for consul client.
 type JaegerOptions struct {
 	// Server is the url of the Jaeger server
-	Server      string `json:"server,omitempty" mapstructure:"server"`
+	Server string `json:"server,omitempty" mapstructure:"server"`
+
 	ServiceName string `json:"service-name,omitempty" mapstructure:"service-name"`
 	Env         string `json:"env,omitempty" mapstructure:"env"`
 }

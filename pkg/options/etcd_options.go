@@ -2,12 +2,10 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/spf13/pflag"
@@ -38,11 +36,11 @@ func (o *EtcdOptions) Validate() []error {
 	errs := []error{}
 
 	if len(o.Endpoints) == 0 {
-		errs = append(errs, fmt.Errorf("--etcd.endpoints can not be empty"))
+		errs = append(errs, errors.New("--etcd.endpoints can not be empty"))
 	}
 
 	if o.DialTimeout <= 0 {
-		errs = append(errs, fmt.Errorf("--etcd.dial-timeout cannot be negative"))
+		errs = append(errs, errors.New("--etcd.dial-timeout cannot be negative"))
 	}
 
 	errs = append(errs, o.TLSOptions.Validate()...)

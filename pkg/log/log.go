@@ -32,6 +32,7 @@ type Logger interface {
 
 	// integrate other loggers
 	krtlog.Logger
+
 	gormlogger.Interface
 }
 

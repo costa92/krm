@@ -2,14 +2,13 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
+	"errors"
 	"fmt"
 	"os"
 
@@ -21,7 +20,8 @@ var _ IOptions = (*TLSOptions)(nil)
 // TLSOptions is the TLS cert info for serving secure traffic.
 type TLSOptions struct {
 	// UseTLS specifies whether should be encrypted with TLS if possible.
-	UseTLS             bool   `json:"use-tls" mapstructure:"use-tls"`
+	UseTLS bool `json:"use-tls" mapstructure:"use-tls"`
+
 	InsecureSkipVerify bool   `json:"insecure-skip-verify" mapstructure:"insecure-skip-verify"`
 	CaCert             string `json:"ca-cert" mapstructure:"ca-cert"`
 	Cert               string `json:"cert" mapstructure:"cert"`
@@ -42,7 +42,7 @@ func (o *TLSOptions) Validate() []error {
 	}
 
 	if (o.Cert != "" && o.Key == "") || (o.Cert == "" && o.Key != "") {
-		errs = append(errs, fmt.Errorf("only one of cert and key configuration option is setted, you should set both to enable tls"))
+		errs = append(errs, errors.New("only one of cert and key configuration option is setted, you should set both to enable tls"))
 	}
 
 	return errs

@@ -2,11 +2,10 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -17,9 +16,8 @@ import (
 	"github.com/segmentio/kafka-go/sasl/scram"
 	"github.com/segmentio/kafka-go/snappy"
 	"github.com/spf13/pflag"
-	"k8s.io/klog/v2"
-
 	stringsutil "github.com/superproj/onex/pkg/util/strings"
+	"k8s.io/klog/v2"
 )
 
 var _ IOptions = (*KafkaOptions)(nil)
@@ -165,7 +163,8 @@ type ReaderOptions struct {
 // Common options for kafka-go reader and writer.
 type KafkaOptions struct {
 	// kafka-go reader and writer common options
-	Brokers       []string      `mapstructure:"brokers"`
+	Brokers []string `mapstructure:"brokers"`
+
 	Topic         string        `mapstructure:"topic"`
 	ClientID      string        `mapstructure:"client-id"`
 	Timeout       time.Duration `mapstructure:"timeout"`
@@ -216,11 +215,11 @@ func (o *KafkaOptions) Validate() []error {
 	errs := []error{}
 
 	if len(o.Brokers) == 0 {
-		errs = append(errs, fmt.Errorf("kafka broker can not be empty"))
+		errs = append(errs, errors.New("kafka broker can not be empty"))
 	}
 
 	if !o.TLSOptions.UseTLS && o.SASLMechanism != "" {
-		errs = append(errs, fmt.Errorf("SASL-Mechanism is setted but use_ssl is false"))
+		errs = append(errs, errors.New("SASL-Mechanism is setted but use_ssl is false"))
 	}
 
 	if !stringsutil.StringIn(strings.ToLower(o.SASLMechanism), []string{"plain", "scram", ""}) {
@@ -228,15 +227,15 @@ func (o *KafkaOptions) Validate() []error {
 	}
 
 	if o.Timeout <= 0 {
-		errs = append(errs, fmt.Errorf("--kafka.timeout cannot be negative"))
+		errs = append(errs, errors.New("--kafka.timeout cannot be negative"))
 	}
 
 	if o.ReaderOptions.GroupID != "" && o.ReaderOptions.Partition != 0 {
-		errs = append(errs, fmt.Errorf("either Partition or GroupID may be assigned, but not both"))
+		errs = append(errs, errors.New("either Partition or GroupID may be assigned, but not both"))
 	}
 
 	if o.WriterOptions.BatchTimeout <= 0 {
-		errs = append(errs, fmt.Errorf("--kafka.writer.batch-timeout cannot be negative"))
+		errs = append(errs, errors.New("--kafka.writer.batch-timeout cannot be negative"))
 	}
 
 	errs = append(errs, o.TLSOptions.Validate()...)
@@ -356,8 +355,8 @@ func (o *KafkaOptions) Writer() (*kafka.Writer, error) {
 		BatchBytes:   o.WriterOptions.BatchBytes,
 		BatchTimeout: o.WriterOptions.BatchTimeout,
 		MaxAttempts:  o.WriterOptions.MaxAttempts,
-		Logger:       &logger{4},
-		ErrorLogger:  &logger{1},
+		Logger:       &logger{v: 4},
+		ErrorLogger:  &logger{v: 1},
 	}
 
 	if o.Compressed {

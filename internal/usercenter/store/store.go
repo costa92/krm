@@ -45,7 +45,7 @@ var _ IStore = (*datastore)(nil)
 // It also creates a singleton instance for the datastore.
 func NewStore(db *gorm.DB) *datastore {
 	once.Do(func() {
-		S = &datastore{db}
+		S = &datastore{core: db}
 	})
 
 	return S

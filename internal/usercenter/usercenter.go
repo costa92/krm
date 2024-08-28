@@ -3,9 +3,8 @@ package usercenter
 import (
 	"os"
 
-	"github.com/jinzhu/copier"
-
 	"github.com/go-kratos/kratos/v2"
+	"github.com/jinzhu/copier"
 
 	"github.com/costa92/krm/internal/pkg/bootstrap"
 	"github.com/costa92/krm/internal/usercenter/server"
@@ -36,7 +35,7 @@ type Config struct {
 
 // Complete fills in any fields not set that are required to have valid data. It's mutating the receiver.
 func (cfg *Config) Complete() completedConfig {
-	return completedConfig{cfg}
+	return completedConfig{Config: cfg}
 }
 
 // completedConfig holds the configuration after it has been completed.

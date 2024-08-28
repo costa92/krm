@@ -2,11 +2,10 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
+	"errors"
 	"fmt"
 	"path"
 
@@ -18,12 +17,16 @@ var _ IOptions = (*SecureServingOptions)(nil)
 // SecureServingOptions contains configuration items related to HTTPS server startup.
 type SecureServingOptions struct {
 	BindAddress string `json:"bind-address"`
+
 	// BindPort is ignored when Listener is set, will serve HTTPS even with 0.
 	BindPort int `json:"bind-port"`
+
 	// Required set to true means that BindPort cannot be zero.
 	Required bool
+
 	// ServerCert is the TLS cert info for serving secure traffic
 	ServerCert GeneratableKeyCert `json:"tls"`
+
 	// AdvertiseAddress net.IP
 }
 
@@ -31,6 +34,7 @@ type SecureServingOptions struct {
 type CertKey struct {
 	// CertFile is a file containing a PEM-encoded certificate, and possibly the complete certificate chain
 	CertFile string `json:"cert-file"`
+
 	// KeyFile is a file containing a PEM-encoded private key for the certificate specified by CertFile
 	KeyFile string `json:"private-key-file"`
 }
@@ -44,6 +48,7 @@ type GeneratableKeyCert struct {
 	// PairName is used to determine the filenames within CertDirectory.
 	// If CertDirectory and PairName are not set, an in-memory certificate will be generated.
 	CertDirectory string `json:"cert-dir"`
+
 	// PairName is the name which will be used with CertDirectory to make a cert and key filenames.
 	// It becomes CertDirectory/PairName.crt and CertDirectory/PairName.key
 	PairName string `json:"pair-name"`
@@ -126,7 +131,7 @@ func (s *SecureServingOptions) Complete() error {
 
 	if len(s.ServerCert.CertDirectory) > 0 {
 		if len(s.ServerCert.PairName) == 0 {
-			return fmt.Errorf("--secure.tls.pair-name is required if --secure.tls.cert-dir is set")
+			return errors.New("--secure.tls.pair-name is required if --secure.tls.cert-dir is set")
 		}
 		keyCert.CertFile = path.Join(s.ServerCert.CertDirectory, s.ServerCert.PairName+".crt")
 		keyCert.KeyFile = path.Join(s.ServerCert.CertDirectory, s.ServerCert.PairName+".key")

@@ -2,12 +2,10 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/asaskevich/govalidator"
@@ -41,7 +39,7 @@ func (s *JWTOptions) Validate() []error {
 	var errs []error
 
 	if !govalidator.StringLength(s.Key, "6", "32") {
-		errs = append(errs, fmt.Errorf("--jwt.key must larger than 5 and little than 33"))
+		errs = append(errs, errors.New("--jwt.key must larger than 5 and little than 33"))
 	}
 
 	return errs

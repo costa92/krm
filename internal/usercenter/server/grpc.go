@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package server
 
 import (
@@ -11,7 +9,6 @@ import (
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 
 	"github.com/costa92/krm/internal/usercenter/service"
-
 	v1 "github.com/costa92/krm/pkg/api/usercenter/v1"
 )
 

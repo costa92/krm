@@ -29,6 +29,7 @@ var AuthnProviderSet = wire.NewSet(NewAuthn, wire.Bind(new(AuthnInterface), new(
 var (
 	// ErrMissingKID is returned when the token format is invalid and the kid field is missing in the token header.
 	ErrMissingKID = errors.Unauthorized(reasonUnauthorized, "Invalid token format: missing kid field in header")
+
 	// ErrSecretDisabled is returned when the SecretID is disabled.
 	ErrSecretDisabled = errors.Unauthorized(reasonUnauthorized, "SecretID is disabled")
 )
@@ -37,6 +38,7 @@ var (
 type AuthnInterface interface {
 	// Sign is used to generate a access token. userID is the jwt identity key.
 	Sign(ctx context.Context, userID string) (authn.IToken, error)
+
 	// Verify is used to verify a access token. If the verification
 	// is successful, userID will be returned.
 	Verify(accessToken string) (string, error)

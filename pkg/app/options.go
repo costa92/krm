@@ -5,13 +5,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/costa92/krm/pkg/log"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	"k8s.io/client-go/util/homedir"
 	cliflag "k8s.io/component-base/cli/flag"
+
+	"github.com/costa92/krm/pkg/log"
 )
 
 const configFlagName = "config"

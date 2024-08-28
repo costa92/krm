@@ -23,20 +23,28 @@ type Options struct {
 	// GenericOptions *genericoptions.Options       `json:"server"   mapstructure:"server"`
 	// gRPC options for configuring gRPC related options.
 	GRPCOptions *genericoptions.GRPCOptions `json:"grpc" mapstructure:"grpc"`
+
 	// HTTP options for configuring HTTP related options.
 	HTTPOptions *genericoptions.HTTPOptions `json:"http" mapstructure:"http"`
+
 	// TLS options for configuring TLS related options.
 	TLSOptions *genericoptions.TLSOptions `json:"tls" mapstructure:"tls"`
+
 	// Mysql options for configuring Mysql related options.
 	MysqlOptions *genericoptions.MySQLOptions `json:"mysql" mapstructure:"mysql"`
+
 	// Redis options for configuring Redis related options.
 	RedisOptions *genericoptions.RedisOptions `json:"redis" mapstructure:"redis"`
+
 	// Metrics options for configuring metric related options.
 	Metrics *genericoptions.MetricsOptions `json:"metrics" mapstructure:"metrics"`
+
 	// JWT options for configuring JWT related options.
 	JWTOptions *genericoptions.JWTOptions `json:"jwt" mapstructure:"jwt"`
+
 	// Kafka options for configuring Kafka related options.
 	KafkaOptions *genericoptions.KafkaOptions `json:"kafka" mapstructure:"kafka"`
+
 	// Log options for configuring log related options.
 	Log *log.Options `json:"log" mapstructure:"log"`
 }

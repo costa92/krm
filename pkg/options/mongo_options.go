@@ -2,12 +2,11 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package options
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/url"
 	"time"
@@ -48,11 +47,11 @@ func (o *MongoOptions) Validate() []error {
 	}
 
 	if o.Database == "" {
-		errs = append(errs, fmt.Errorf("--mongo.database can not be empty"))
+		errs = append(errs, errors.New("--mongo.database can not be empty"))
 	}
 
 	if o.Collection == "" {
-		errs = append(errs, fmt.Errorf("--mongo.collection can not be empty"))
+		errs = append(errs, errors.New("--mongo.collection can not be empty"))
 	}
 
 	if o.TLSOptions != nil {

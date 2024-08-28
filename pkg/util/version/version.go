@@ -20,6 +20,7 @@ type Version struct {
 var (
 	// versionMatchRE splits a version string into numeric and "extra" parts
 	versionMatchRE = regexp.MustCompile(`^\s*v?([0-9]+(?:\.[0-9]+)*)(.*)*$`)
+
 	// extraMatchRE splits the "extra" part of versionMatchRE into semver pre-release and build metadata; it does not validate the "no leading zeroes" constraint for pre-release
 	extraMatchRE = regexp.MustCompile(`^(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?\s*$`)
 )
@@ -235,7 +236,7 @@ func (v *Version) String() string {
 		if i > 0 {
 			buffer.WriteString(".")
 		}
-		buffer.WriteString(fmt.Sprintf("%d", comp))
+		buffer.WriteString(strconv.FormatUint(uint64(comp), 10))
 	}
 	if v.preRelease != "" {
 		buffer.WriteString("-")

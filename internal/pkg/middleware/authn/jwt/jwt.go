@@ -2,8 +2,6 @@
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/superproj/onex.
-//
-
 package jwt
 
 import (
@@ -54,9 +52,9 @@ func Server(a authn.Authenticator) middleware.Middleware {
 					return nil, err
 				}
 				//
-				//ctx = onexx.NewContext(ctx, claims)
-				//ctx = onexx.NewUserID(ctx, claims.Subject)
-				//ctx = onexx.NewAccessToken(ctx, accessToken)
+				// ctx = onexx.NewContext(ctx, claims)
+				// ctx = onexx.NewUserID(ctx, claims.Subject)
+				// ctx = onexx.NewAccessToken(ctx, accessToken)
 				ctx = log.WithContext(ctx, "user.id", claims.Subject)
 				return handler(ctx, rq)
 			}

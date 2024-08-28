@@ -14,7 +14,8 @@ var _ IOptions = (*HealthOptions)(nil)
 // HealthOptions defines options for redis cluster.
 type HealthOptions struct {
 	// Enable debugging by exposing profiling information.
-	HTTPProfile        bool   `json:"enable-http-profiler" mapstructure:"enable-http-profiler"`
+	HTTPProfile bool `json:"enable-http-profiler" mapstructure:"enable-http-profiler"`
+
 	HealthCheckPath    string `json:"check-path" mapstructure:"check-path"`
 	HealthCheckAddress string `json:"check-address" mapstructure:"check-address"`
 }

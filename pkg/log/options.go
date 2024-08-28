@@ -9,14 +9,19 @@ import (
 type Options struct {
 	// DisableCaller specifies whether to include caller information in the log.
 	DisableCaller bool `json:"disable-caller,omitempty" mapstructure:"disable-caller"`
+
 	// DisableStacktrace specifies whether to record a stack trace for all messages at or above panic level.
 	DisableStacktrace bool `json:"disable-stacktrace,omitempty" mapstructure:"disable-stacktrace"`
+
 	// EnableColor specifies whether to output colored logs.
 	EnableColor bool `json:"enable-color"       mapstructure:"enable-color"`
+
 	// Level specifies the minimum log level. Valid values are: debug, info, warn, error, dpanic, panic, and fatal.
 	Level string `json:"level,omitempty" mapstructure:"level"`
+
 	// Format specifies the log output format. Valid values are: console and json.
 	Format string `json:"format,omitempty" mapstructure:"format"`
+
 	// OutputPaths specifies the output paths for the logs.
 	OutputPaths []string `json:"output-paths,omitempty" mapstructure:"output-paths"`
 }

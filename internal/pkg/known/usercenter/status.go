@@ -6,18 +6,23 @@ const (
 	// The user needs to complete email/phone number verification steps to transition to an active state.
 	// The OneX project does not currently use this.
 	UserStatusRegistered = "registered"
+
 	// The user has registered and been verified, and can use the system normally.
 	// Most user operations are performed in this state.
 	UserStatusActived = "actived"
+
 	// The user has entered the incorrect password too many times, and the account has been locked by the system.
 	// The user needs to recover the password or contact the administrator to unlock the account.
 	UserStatusLocked = "locked"
+
 	// The user has been added to the system blacklist due to serious misconduct.
 	// Blacklisted users cannot register new accounts or use the system.
 	UserStatusBlacklisted = "blacklisted"
+
 	// The administrator has manually disabled the user account, and the user cannot log in after being disabled.
 	// This may be due to user misconduct or other reasons.
 	UserStatusDisabled = "disabled"
+
 	// The user has actively deleted their own account, or the administrator has deleted the user account.
 	// The deleted account can be chosen to be soft-deleted (with some data retained) or completely deleted.
 	UserStatusDeleted = "deleted"
@@ -29,6 +34,7 @@ const (
 const (
 	// UserStatusNeedActive informs onex-nightwatch that the user needs to be activated.
 	UserStatusNeedActive = "need_active"
+
 	// UserStatusNeedDisable informs onex-nightwatch that the user needs to be disabled.
 	UserStatusNeedDisable = "need_disable"
 )

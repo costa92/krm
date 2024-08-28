@@ -18,6 +18,7 @@ type MySQLOptions struct {
 	MaxIdleConnections    int
 	MaxOpenConnections    int
 	MaxConnectionLifeTime time.Duration
+
 	// +optional
 	Logger logger.Interface
 }

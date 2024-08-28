@@ -1,11 +1,11 @@
 package app
 
 import (
+	genericapiserver "k8s.io/apiserver/pkg/server"
+
 	"github.com/costa92/krm/cmd/krm-usercenter/app/options"
 	"github.com/costa92/krm/internal/usercenter"
 	"github.com/costa92/krm/pkg/app"
-
-	genericapiserver "k8s.io/apiserver/pkg/server"
 )
 
 // Define the description of the command.

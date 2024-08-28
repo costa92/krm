@@ -1,6 +1,7 @@
 package version
 
 import (
+	"errors"
 	"fmt"
 	"sync/atomic"
 
@@ -33,7 +34,7 @@ func ValidateDynamicVersion(dynamicVersion string) error {
 
 func validateDynamicVersion(dynamicVersion, defaultVersion string) error {
 	if len(dynamicVersion) == 0 {
-		return fmt.Errorf("version must not be empty")
+		return errors.New("version must not be empty")
 	}
 	if dynamicVersion == defaultVersion {
 		// allow no-op
