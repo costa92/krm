@@ -128,3 +128,8 @@ _install.gofumpt:
 .PHONY: _install.kafkactl
 _install.kafkactl: ## Install kafkactl command line tool.
 	@$(GO) install github.com/deviceinsight/kafkactl/v5@$(KAFKACTL_VERSION)
+
+
+.PHONY: _install.gorgeous
+_install.gorgeous: ## Install gorgeous command line tool.
+	@$(GO) install github.com/fsgo/go_fmt/cmd/gorgeous@latest
