@@ -42,12 +42,12 @@ kafka:
     start-offset: 0
     max-attempts: 3
 mongo:
-  url: ${ONEX_MONGO_URL}
-  database: ${ONEX_MONGO_DATABASE}
-  collection: ${ONEX_MONGO_COLLECTION} # mongodb collection name
-  username: ${ONEX_MONGO_USERNAME}
-  password: ${ONEX_MONGO_PASSWORD}
-  timeout: ${ONEX_MONGO_TIMEOUT}
+  url: 127.0.0.1
+  database: krm # mongodb database name
+  collection: audit # mongodb collection name
+  username: dev
+  password: krm(#)666
+  timeout: 30s
   tls:
     use-tls: false
     nsecure-skip-verify: true
