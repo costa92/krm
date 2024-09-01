@@ -4,8 +4,9 @@ import (
 	"github.com/costa92/krm/pkg/log"
 	genericoptions "github.com/costa92/krm/pkg/options"
 	kafkaconnector "github.com/costa92/krm/pkg/streams/connector/kafka"
+	mongoconnector "github.com/costa92/krm/pkg/streams/connector/mongo"
+	"github.com/costa92/krm/pkg/streams/flow"
 	"github.com/segmentio/kafka-go"
-	"github.com/superproj/onex/pkg/streams/flow"
 	"go.mongodb.org/mongo-driver/mongo"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"time"
@@ -73,6 +74,10 @@ func (c *completedConfig) New() (*Server, error) {
 // preparedServer is a prepared Server. zh: preparedServer 是一个准备好的 Server。
 type preparedServer struct {
 	*Server
+}
+
+func (s *Server) PrepareRun() preparedServer {
+	return preparedServer{s}
 }
 
 func (s preparedServer) Run(stopCh <-chan struct{}) error {

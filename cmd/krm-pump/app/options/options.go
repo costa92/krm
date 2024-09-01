@@ -1,6 +1,7 @@
 package options
 
 import (
+	"github.com/costa92/krm/internal/pump"
 	"github.com/costa92/krm/pkg/app"
 	genericoptions "github.com/costa92/krm/pkg/options"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
