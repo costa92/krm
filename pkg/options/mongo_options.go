@@ -41,7 +41,6 @@ func NewMongoOptions() *MongoOptions {
 // Validate verifies flags passed to MongoOptions.
 func (o *MongoOptions) Validate() []error {
 	var errs []error
-	fmt.Println(o.Database)
 	if _, err := url.Parse(o.URL); err != nil {
 		errs = append(errs, fmt.Errorf("unable to parse connection URL: %w", err))
 	}
@@ -102,6 +101,7 @@ func (o *MongoOptions) NewClient() (*mongo.Client, error) {
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(ctx, opts)
+
 	if err != nil {
 		return nil, err
 	}

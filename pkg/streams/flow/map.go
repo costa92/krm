@@ -1,6 +1,8 @@
 package flow
 
-import "github.com/costa92/krm/pkg/streams"
+import (
+	"github.com/costa92/krm/pkg/streams"
+)
 
 // MapFunction is a function that maps an element of type T to an element of type R.
 // zh: MapFunction 是一个将类型 T 的元素映射到类型 R 的元素的函数。

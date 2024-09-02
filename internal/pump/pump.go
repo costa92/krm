@@ -46,6 +46,7 @@ func (cfg *Config) Complete() completedConfig {
 func (c completedConfig) New() (*Server, error) {
 	client, err := c.MongoOptions.NewClient()
 	if err != nil {
+		log.Errorw(err, "Failed to create a MongoOptions.NewClient")
 		return nil, err
 	}
 
@@ -97,8 +98,8 @@ func (s preparedServer) Run(stopCh <-chan struct{}) error {
 	if err != nil {
 		return err
 	}
-
 	log.Infof("Successfully start pump server")
+	//fmt.Println(sink.In())
 	source.Via(filter).To(sink)
 
 	return nil

@@ -38,7 +38,7 @@ kafka:
     max-attempts: 3
 mongo:
   url: 192.168.58.2:30004 # mongodb 地址
-  database: krm # mongodb database name
+  database: admin # mongodb database name
   collection: audit # mongodb collection name
   username: dev
   password: krm(#)666
