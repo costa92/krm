@@ -80,13 +80,13 @@ func (fm *FlatMap[T, R]) doStream() {
 		sem <- struct{}{}
 		go func(element T) {
 			defer func() { <-sem }()
-			results := fm.flatMapFunction(element)
-			for _, result := range results {
-				fm.out <- result
+			result := fm.flatMapFunction(element)
+			for _, item := range result {
+				fm.out <- item
 			}
-		}(elem)
+		}(elem.(T))
 	}
-	for i := 0; i < cap(sem); i++ {
+	for i := 0; i < int(fm.parallelism); i++ {
 		sem <- struct{}{}
 	}
 	close(fm.out)
