@@ -43,7 +43,7 @@ func (cfg *Config) Complete() completedConfig {
 	return completedConfig{cfg}
 }
 
-func (c *completedConfig) New() (*Server, error) {
+func (c completedConfig) New() (*Server, error) {
 	client, err := c.MongoOptions.NewClient()
 	if err != nil {
 		return nil, err

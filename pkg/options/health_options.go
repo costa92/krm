@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/http/pprof"
 
-	"github.com/go-kratos/kratos/v2/log"
+	"github.com/costa92/krm/pkg/log"
 	"github.com/gorilla/mux"
 	"github.com/spf13/pflag"
 )

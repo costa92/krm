@@ -50,12 +50,10 @@ func AddConfigFlag(fs *pflag.FlagSet, name string, watch bool) {
 			viper.SetConfigFile(cfgFile)
 		} else {
 			viper.AddConfigPath(".")
-
 			if names := strings.Split(name, "-"); len(names) > 1 {
 				viper.AddConfigPath(filepath.Join(homedir.HomeDir(), "."+names[0]))
 				viper.AddConfigPath(filepath.Join("/etc", names[0]))
 			}
-
 			viper.SetConfigName(name)
 		}
 
@@ -63,7 +61,6 @@ func AddConfigFlag(fs *pflag.FlagSet, name string, watch bool) {
 			log.Debugw("Failed to read configuration file", "file", cfgFile, "err", err)
 		}
 		log.Debugw("Success to read configuration file", "file", viper.ConfigFileUsed())
-
 		if watch {
 			viper.WatchConfig()
 			viper.OnConfigChange(func(e fsnotify.Event) {

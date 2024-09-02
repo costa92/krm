@@ -40,8 +40,8 @@ func NewMongoOptions() *MongoOptions {
 
 // Validate verifies flags passed to MongoOptions.
 func (o *MongoOptions) Validate() []error {
-	errs := []error{}
-
+	var errs []error
+	fmt.Println(o.Database)
 	if _, err := url.Parse(o.URL); err != nil {
 		errs = append(errs, fmt.Errorf("unable to parse connection URL: %w", err))
 	}

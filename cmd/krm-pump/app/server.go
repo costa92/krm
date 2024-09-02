@@ -49,8 +49,7 @@ func run(opts *options.Options) app.RunFunc {
 
 // Run runs the specified APIServer. This should never exit.
 func Run(c *pump.Config, stopCh <-chan struct{}) error {
-	complete := c.Complete()
-	server, err := complete.New()
+	server, err := c.Complete().New()
 	if err != nil {
 		return err
 	}
