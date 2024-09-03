@@ -11,6 +11,7 @@ import "github.com/costa92/krm/pkg/streams"
 
 // PassThrough retransmits incoming elements as is.
 // zh: PassThrough 重新传输传入的元素。
+// 直通（PassThrough）
 type PassThrough struct {
 	in  chan any
 	out chan any

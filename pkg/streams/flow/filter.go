@@ -4,6 +4,7 @@ import "github.com/costa92/krm/pkg/streams"
 
 // FilterPredicate represents a filter predicate (boolean-valued function).
 // zh: FilterPredicate 表示一个过滤谓词（布尔值函数）。
+// 过滤（Filter）
 type FilterPredicate[T any] func(T) bool
 
 // Filter filters incoming elements using a filter predicate.

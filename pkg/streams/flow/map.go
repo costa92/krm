@@ -16,6 +16,7 @@ type MapFunction[T, R any] func(T) R
 // [ ---------- MapFunction ---------- ]
 //
 // out -- 1' - 2' --- 3' - 4' ----- 5' -.
+// 映射（Map）
 type Map[T, R any] struct {
 	mapFunction MapFunction[T, R]
 	in          chan any

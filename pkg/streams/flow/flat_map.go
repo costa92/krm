@@ -4,6 +4,7 @@ import "github.com/costa92/krm/pkg/streams"
 
 // FlatMapFunction represents a FlatMap transformation function.
 // zh: FlatMapFunction 表示一个 FlatMap 转换函数。
+// 平摊映射（FlatMap）
 type FlatMapFunction[T, R any] func(T) []R
 
 // FlatMap takes one element and produces zero, one, or more elements.
