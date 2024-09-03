@@ -44,8 +44,11 @@ func NewMongoSink(ctx context.Context, db *mongo.Database, conf SinkConfig) (*Mo
 // init starts the main loop.
 func (ms *MongoSink) init() {
 	ms.capCollection()
-
 	for msg := range ms.in {
+		// 处理msg
+		//message := msg.(kafka.Message)
+
+		// Insert the message into the collection.
 		_, err := ms.db.Collection(ms.conf.CollectionName).InsertOne(context.Background(), msg)
 		if err != nil {
 			klog.ErrorS(err, "Problem inserting to mongo collection")
