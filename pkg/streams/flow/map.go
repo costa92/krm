@@ -62,6 +62,7 @@ func (m *Map[T, R]) In() chan<- any {
 
 func (m *Map[T, R]) transmit(inlet streams.Inlet) {
 	for element := range m.Out() {
+
 		inlet.In() <- element
 	}
 	close(inlet.In())

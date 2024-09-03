@@ -32,7 +32,6 @@ type completedConfig struct {
 // addUTC appends a UTC timestamp to the beginning of the message value.
 var addUTC = func(msg kafka.Message) kafka.Message {
 	timestamp := time.Now().Format(time.DateTime)
-
 	// Concatenate the UTC timestamp with msg.Value
 	msg.Value = []byte(timestamp + " " + string(msg.Value))
 	return msg
@@ -88,6 +87,7 @@ func (s preparedServer) Run(stopCh <-chan struct{}) error {
 	if err != nil {
 		return err
 	}
+
 	filter := flow.NewMap(addUTC, 1)
 	sink, err := mongoconnector.NewMongoSink(ctx, s.db, mongoconnector.SinkConfig{
 		CollectionName:            s.colName,

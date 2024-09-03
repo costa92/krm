@@ -11,6 +11,8 @@ import (
 	"syscall"
 )
 
+// 参考: https://gitcode.com/gh_mirrors/go/go-streams/blob/master/kafka/kafka_sarama.go
+// KafkaSource represents an Apache Kafka source connector.
 type KafkaSource struct {
 	r         *kafka.Reader
 	out       chan any
@@ -51,17 +53,30 @@ func (ks *KafkaSource) init() {
 }
 
 // consume reads messages from the Kafka topic and sends them to the output channel.
+//// zh: consume 从 Kafka 主题中读取消息并将其发送到输出通道。
+//func (ks *KafkaSource) consume() {
+//	for {
+//		msg, err := ks.r.FetchMessage(ks.ctx)
+//		if err != nil {
+//			klog.Errorf("error while fetching message: %v", err)
+//			break
+//		}
+//		fmt.Println("message received: ", string(msg.Value))
+//		ks.out <- msg.Value
+//		ks.r.CommitMessages(ks.ctx, msg)
+//	}
+//}
+
+// consume reads messages from the Kafka topic and sends them to the output channel.
 // zh: consume 从 Kafka 主题中读取消息并将其发送到输出通道。
 func (ks *KafkaSource) consume() {
 	for {
-		msg, err := ks.r.FetchMessage(ks.ctx)
+		// the `ReadMessage` method blocks until we receive the next event
+		msg, err := ks.r.ReadMessage(ks.ctx)
 		if err != nil {
-			klog.Errorf("error while fetching message: %v", err)
-			break
+			klog.ErrorS(err, "Failed to read message")
 		}
-
-		ks.out <- msg.Value
-		ks.r.CommitMessages(ks.ctx, msg)
+		ks.out <- msg
 	}
 }
 

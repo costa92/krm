@@ -1,13 +1,14 @@
 package flow
 
-import "github.com/costa92/krm/pkg/streams"
+import (
+	"github.com/costa92/krm/pkg/streams"
+)
 
 func DoStream(outlet streams.Outlet, inlet streams.Inlet) {
 	go func() {
 		for element := range outlet.Out() {
 			inlet.In() <- element
 		}
-
 		close(inlet.In())
 	}()
 }

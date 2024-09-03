@@ -16,6 +16,7 @@ require (
 	github.com/go-kratos/kratos/contrib/registry/etcd/v2 v2.0.0-20230830131453-6c026bce56a9
 	github.com/go-kratos/kratos/v2 v2.7.3
 	github.com/go-kratos/swagger-api v1.0.1
+	github.com/go-playground/assert/v2 v2.2.0
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/wire v0.6.0
 	github.com/gorilla/handlers v1.5.1
