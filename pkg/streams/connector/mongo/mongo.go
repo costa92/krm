@@ -53,6 +53,21 @@ func (ms *MongoSink) init() {
 		if err != nil {
 			klog.ErrorS(err, "Problem inserting to mongo collection")
 		}
+
+		// 测试查询的数据
+		//id, _ := primitive.ObjectIDFromHex("66d6d0aedd6a0497f2bfef31")
+		//// 查询数据
+		//res := ms.db.Collection(ms.conf.CollectionName).FindOne(context.Background(), bson.M{"_id": id})
+		//if res.Err() != nil {
+		//	klog.ErrorS(err, "Problem inserting to mongo collection")
+		//}
+		//var message kafka.Message
+		//err = res.Decode(&message)
+		//if err != nil {
+		//	klog.ErrorS(err, "Problem inserting to mongo collection")
+		//}
+		//fmt.Println("message received: ", string(message.Value))
+		//klog.InfoS("FindOne", "res", res)
 	}
 }
 
