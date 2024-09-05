@@ -3,7 +3,7 @@ health:
   check-path: /healthz
   check-address: 0.0.0.0:55082
 redis:
-  addr: 192.168.58.2:30001 # Redis 地址
+  addr: 127.0.0.1:30001 # Redis 地址
   database: 0 # Redis 数据库索引
   password: krm(#)666 # Redis 密码
   max-retries: 3 # # 使用默认值即可，不需要在 manifests/env.local 中配置
@@ -15,7 +15,7 @@ redis:
   pool-size: 10
   enable-trace: false
 kafka:
-  brokers: 192.168.58.2:30006
+  brokers: 127.0.0.1:30006
   topic: audit
   timeout: 3s
   # tls:
@@ -37,7 +37,7 @@ kafka:
     start-offset: 0
     max-attempts: 3
 mongo:
-  url: 192.168.58.2:30004 # mongodb 地址
+  url: 127.0.0.1:30004 # mongodb 地址
   database: admin # mongodb database name
   collection: audit # mongodb collection name
   username: dev
