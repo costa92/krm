@@ -1,4 +1,4 @@
-package krmctx
+package main
 
 func main() {
 
