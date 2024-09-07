@@ -22,7 +22,7 @@ import (
 func NewWhiteListMatcher() selector.MatchFunc {
 	whitelist := make(map[string]struct{})
 	whitelist[v1.OperationUserCenterLogin] = struct{}{}
-	// whitelist[v1.OperationUserCenterCreateUser] = struct{}{}
+	whitelist[v1.OperationUserCenterCreateUser] = struct{}{}
 	// whitelist[v1.OperationUserCenterAuth] = struct{}{}
 	// whitelist[v1.OperationUserCenterAuthorize] = struct{}{}
 	// whitelist[v1.OperationUserCenterAuthenticate] = struct{}{}

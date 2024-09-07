@@ -8,6 +8,8 @@ package usercenter.v1;
 
 import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "validate/validate.proto";
 
 option go_package = "github.com/costa92/krm/pkg/api/usercenter/v1;v1";
 
@@ -17,6 +19,23 @@ service UserCenter {
     option (google.api.http) = {
       post: "/v1/usercenter/login"
       body: "*"
+    };
+  }
+
+  // Logout 登出
+  rpc Logout(LogoutRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/usercenter/logout"
+      body: "*"
+    };
+  }
+
+
+  // CreateUser
+  rpc CreateUser(CreateUserRequest) returns (UserReply) {
+    option (google.api.http) = {
+      post: "/v1/users",
+      body: "*",
     };
   }
 }
@@ -45,4 +64,15 @@ message UserReply {
   int64 secrets = 7;
   google.protobuf.Timestamp createdAt = 8;
   google.protobuf.Timestamp updatedAt = 9;
+}
+
+
+message LogoutRequest {}
+
+message CreateUserRequest {
+  string username = 1 [(validate.rules).string = {min_len: 1, max_len: 253}];
+  string nickname = 2 [(validate.rules).string = {min_len: 1, max_len: 253}];
+  string password = 3 [(validate.rules).string = {min_len: 6, max_len: 16}];
+  string email = 4 [(validate.rules).string.email = true];
+  string phone = 5 [(validate.rules).string.len = 11];
 }

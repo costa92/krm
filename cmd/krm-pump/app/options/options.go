@@ -23,7 +23,7 @@ type Options struct {
 // NewOptions returns initialized Options.
 func NewOptions() *Options {
 	o := &Options{
-		// RedisOptions: genericoptions.NewRedisOptions(),
+		//RedisOptions:  genericoptions.NewRedisOptions(),
 		HealthOptions: genericoptions.NewHealthOptions(),
 		KafkaOptions:  genericoptions.NewKafkaOptions(),
 		MongoOptions:  genericoptions.NewMongoOptions(),

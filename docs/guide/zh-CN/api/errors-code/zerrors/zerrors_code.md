@@ -30,7 +30,4 @@
 | IdempotentMissingToken | 400 |  缺少幂等性令牌错误 |
 | IdempotentTokenExpired | 400 |  幂等性令牌已过期错误 |
 
-## 参考
-
-- [错误规范](https://github.com/superproj/onex/blob/master/docs/devel/zh-CN/conversions/errors.md)
-
+## 参考文档

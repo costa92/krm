@@ -31,7 +31,4 @@
 | SecretNotFound | 404 |  密钥未找到，可能是由于密钥不存在或输入的密钥标识有误 |
 | SecretCreateFailed | 541 |  创建密钥失败，可能是由于服务器或其他问题导致的创建过程中的错误 |
 
-## 参考
-
-- [错误规范](https://github.com/superproj/onex/blob/master/docs/devel/zh-CN/conversions/errors.md)
-
+## 参考文档
