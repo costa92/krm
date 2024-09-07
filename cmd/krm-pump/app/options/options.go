@@ -60,7 +60,7 @@ func (o *Options) Complete() error {
 
 // Validate validates all the required options.
 func (o *Options) Validate() error {
-	errs := []error{}
+	var errs []error
 
 	errs = append(errs, o.HealthOptions.Validate()...)
 	errs = append(errs, o.KafkaOptions.Validate()...)

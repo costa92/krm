@@ -15,7 +15,7 @@ redis:
   pool-size: 10
   enable-trace: false
 kafka:
-  brokers: 127.0.0.1:30006
+  brokers: 198.19.249.2:30006
   topic: audit
   timeout: 3s
   # tls:
