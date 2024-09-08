@@ -1,5 +1,7 @@
 package store
 
+//go:generate mockgen -self_package github.com/costa92/krm/internal/usercenter/store -destination mock_store.go -package store github.com/costa92/krm/internal/usercenter/store IStore,UserStore
+
 import (
 	"context"
 	"sync"
