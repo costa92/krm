@@ -24,6 +24,7 @@ type transactionKey struct{}
 
 type IStore interface {
 	TX(context.Context, func(ctx context.Context) error) error
+	Users() UserStore
 }
 
 // datastore is an implementation of IStore that provides methods
@@ -75,4 +76,9 @@ func (ds *datastore) TX(ctx context.Context, fn func(ctx context.Context) error)
 			return fn(ctx)
 		},
 	)
+}
+
+// Users returns an initialized instance of UserStore.
+func (ds *datastore) Users() UserStore {
+	return newUserStore(ds)
 }
