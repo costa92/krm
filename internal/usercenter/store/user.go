@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// UserStore defines methods used to interact with the user store.
-type UserStore interface {
+// UsersStore defines methods used to interact with the user store.
+type UsersStore interface {
 	// Create adds a new user record to the database.
 	Create(ctx context.Context, user *model.UserM) error
 }

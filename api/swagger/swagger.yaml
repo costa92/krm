@@ -1,73 +1,154 @@
 consumes:
-    - application/json
+- application/json
 produces:
-    - application/json
+- application/json
 swagger: "2.0"
 info:
-    title: usercenter/v1/usercenter.proto
-    version: version not set
+  title: usercenter/v1/usercenter.proto
+  version: version not set
 paths:
-    /v1/usercenter/login:
-        post:
-            operationId: UserCenter_Login
-            parameters:
-                - in: body
-                  name: body
-                  required: true
-                  schema:
-                    $ref: '#/definitions/v1LoginRequest'
-            responses:
-                "200":
-                    description: A successful response.
-                    schema:
-                        $ref: '#/definitions/v1LoginReply'
-                default:
-                    description: An unexpected error response.
-                    schema:
-                        $ref: '#/definitions/rpcStatus'
-            summary: Login 登录
-            tags:
-                - UserCenter
+  /v1/usercenter/login:
+    post:
+      tags:
+      - UserCenter
+      summary: Login 登录
+      operationId: UserCenter_Login
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1LoginRequest'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1LoginReply'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+  /v1/usercenter/logout:
+    post:
+      tags:
+      - UserCenter
+      summary: Logout 登出
+      operationId: UserCenter_Logout
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1LogoutRequest'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            type: object
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
+  /v1/users:
+    post:
+      tags:
+      - UserCenter
+      summary: CreateUser
+      operationId: UserCenter_CreateUser
+      parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/v1CreateUserRequest'
+      responses:
+        "200":
+          description: A successful response.
+          schema:
+            $ref: '#/definitions/v1UserReply'
+        default:
+          description: An unexpected error response.
+          schema:
+            $ref: '#/definitions/rpcStatus'
 definitions:
-    protobufAny:
-        additionalProperties: {}
-        properties:
-            '@type':
-                type: string
-        type: object
-    rpcStatus:
-        properties:
-            code:
-                format: int32
-                type: integer
-            details:
-                items:
-                    $ref: '#/definitions/protobufAny'
-                    type: object
-                type: array
-            message:
-                type: string
-        type: object
-    v1LoginReply:
-        properties:
-            access_token:
-                type: string
-            expiresAt:
-                format: int64
-                type: string
-            refresh_token:
-                type: string
-            type:
-                type: string
-        title: LoginReply 登录响应
-        type: object
-    v1LoginRequest:
-        properties:
-            password:
-                type: string
-            username:
-                type: string
-        title: LoginRequest 登录请求
-        type: object
+  protobufAny:
+    type: object
+    properties:
+      '@type':
+        type: string
+    additionalProperties: false
+  rpcStatus:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      details:
+        type: array
+        items:
+          type: object
+          $ref: '#/definitions/protobufAny'
+      message:
+        type: string
+  v1CreateUserRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      nickname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+  v1LoginReply:
+    type: object
+    title: LoginReply 登录响应
+    properties:
+      access_token:
+        type: string
+      expiresAt:
+        type: string
+        format: int64
+      refresh_token:
+        type: string
+      type:
+        type: string
+  v1LoginRequest:
+    type: object
+    title: LoginRequest 登录请求
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+  v1LogoutRequest:
+    type: object
+  v1UserReply:
+    type: object
+    properties:
+      createdAt:
+        type: string
+        format: date-time
+      email:
+        type: string
+      nickname:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      secrets:
+        type: string
+        format: int64
+      updatedAt:
+        type: string
+        format: date-time
+      userID:
+        type: string
+      username:
+        type: string
 tags:
-    - name: UserCenter
+- name: UserCenter

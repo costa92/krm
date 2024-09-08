@@ -1,6 +1,6 @@
 package store
 
-//go:generate mockgen -self_package github.com/costa92/krm/internal/usercenter/store -destination mock_store.go -package store github.com/costa92/krm/internal/usercenter/store IStore,UserStore
+//go:generate mockgen -self_package github.com/costa92/krm/internal/usercenter/store -destination mock_store.go -package store github.com/costa92/krm/internal/usercenter/store IStore,UsersStore,SecretStore
 
 import (
 	"context"
@@ -26,7 +26,8 @@ type transactionKey struct{}
 
 type IStore interface {
 	TX(context.Context, func(ctx context.Context) error) error
-	Users() UserStore
+	Users() UsersStore
+	Secrets() SecretStore
 }
 
 // datastore is an implementation of IStore that provides methods
@@ -81,6 +82,10 @@ func (ds *datastore) TX(ctx context.Context, fn func(ctx context.Context) error)
 }
 
 // Users returns an initialized instance of UserStore.
-func (ds *datastore) Users() UserStore {
+func (ds *datastore) Users() UsersStore {
 	return newUserStore(ds)
+}
+
+func (ds *datastore) Secrets() SecretStore {
+	return newSecretStore(ds)
 }

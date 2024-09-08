@@ -19,3 +19,21 @@ CREATE TABLE `uc_user`
     UNIQUE KEY `idx_username` (`username`),
     UNIQUE KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+
+
+CREATE TABLE `uc_secret`
+(
+    `id`          bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
+    `user_id`     varchar(253) NOT NULL DEFAULT '' COMMENT '用户 ID',
+    `name`        varchar(253) NOT NULL DEFAULT '' COMMENT '密钥名称',
+    `secret_id`   varchar(36)  NOT NULL DEFAULT '' COMMENT '密钥 ID',
+    `secret_key`  varchar(36)  NOT NULL DEFAULT '' COMMENT '密钥 Key',
+    `status`      tinyint unsigned NOT NULL DEFAULT 1 COMMENT '密钥状态，0-禁用；1-启用',
+    `expires`     bigint(64) NOT NULL DEFAULT 0 COMMENT '0 永不过期',
+    `description` varchar(255) NOT NULL DEFAULT '' COMMENT '密钥描述',
+    `created_at`  datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`  datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_secret_id` (`secret_id`),
+    KEY           `idx_user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='密钥表';
