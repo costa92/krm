@@ -31,6 +31,7 @@ require (
 	github.com/redis/go-redis/extra/rediscensus/v9 v9.5.3
 	github.com/redis/go-redis/v9 v9.6.1
 	github.com/segmentio/kafka-go v0.4.47
+	github.com/sony/sonyflake v1.0.0
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
