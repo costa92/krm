@@ -5,6 +5,7 @@ import (
 	"github.com/costa92/krm/cmd/krm-apiserver/app/options"
 	"github.com/costa92/krm/pkg/version"
 	"github.com/spf13/cobra"
+	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
@@ -45,6 +46,13 @@ func NewAPIServerCommand(serverRunOptions ...Option) *cobra.Command {
 			if err != nil {
 				return err
 			}
+			// validate options
+			if errs := completedOptions.Validate(); len(errs) != 0 {
+				return utilerrors.NewAggregate(errs)
+			}
+			// add feature enablement metrics
+			utilfeature.DefaultMutableFeatureGate.AddMetrics()
+			// run the server
 			return Run(completedOptions, genericapiserver.SetupSignalHandler())
 		},
 		Args: func(cmd *cobra.Command, args []string) error {

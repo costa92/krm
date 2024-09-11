@@ -19,7 +19,6 @@ func NewOptions() *Options {
 	return o
 }
 
-// AddFlags
 func (o *Options) AddFlags(fss *cliflag.NamedFlagSets) {
 
 }
