@@ -1,28 +1,16 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"github.com/costa92/krm/cmd/krm-apiserver/app"
+	"k8s.io/component-base/cli"
+	"os"
 )
 
-func hello(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprint(w, "hello\n")
-}
-
-func headers(w http.ResponseWriter, req *http.Request) {
-	for name, headers := range req.Header {
-		for _, h := range headers {
-			fmt.Fprintf(w, "%v: %v\n", name, h)
-		}
-	}
-}
-
 func main() {
-	http.HandleFunc("/hello", hello)
-	http.HandleFunc("/headers", headers)
+	// Please note that the following WithOptions are all required.
+	// zh: 请注意以下 WithOptions 都是必须的。
+	command := app.NewAPIServerCommand()
 
-	err := http.ListenAndServe(":8090", nil)
-	if err != nil {
-		return
-	}
+	code := cli.Run(command)
+	os.Exit(code)
 }
