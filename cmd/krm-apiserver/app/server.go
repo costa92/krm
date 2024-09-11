@@ -13,6 +13,7 @@ import (
 	"k8s.io/component-base/logs"
 	logsapi "k8s.io/component-base/logs/api/v1"
 	"k8s.io/component-base/term"
+	"k8s.io/klog/v2"
 )
 
 const appName = "krm-apiserver"
@@ -74,5 +75,7 @@ func NewAPIServerCommand(serverRunOptions ...Option) *cobra.Command {
 
 // Run runs the specified APIServer. This should never exit.
 func Run(opts options.CompletedOptions, stopCh <-chan struct{}) error {
+	// To help debugging, immediately log version
+	klog.Infof("Version: %+v", version.Get().String())
 	return nil
 }
