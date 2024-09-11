@@ -3,6 +3,7 @@ package app
 import (
 	"fmt"
 	"github.com/costa92/krm/cmd/krm-apiserver/app/options"
+	"github.com/costa92/krm/pkg/version"
 	"github.com/spf13/cobra"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	genericapiserver "k8s.io/apiserver/pkg/server"
@@ -56,7 +57,7 @@ func NewAPIServerCommand(serverRunOptions ...Option) *cobra.Command {
 	}
 	fs := cmd.Flags()
 	namedFlagSets := s.Flags()
-
+	version.AddFlags(namedFlagSets.FlagSet("global"))
 	globalflag.AddGlobalFlags(namedFlagSets.FlagSet("global"), cmd.Name(), logs.SkipLoggingConfigurationFlags())
 	// The custom flag is actually not used. It is just a placeholder. In order to be consistent with
 	// the kube-apiserver code, learning onex-apiserver is equivalent to learning kube-apiserver.
