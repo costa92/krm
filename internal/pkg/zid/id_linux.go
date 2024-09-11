@@ -3,6 +3,8 @@
 
 package zid
 
+import "os"
+
 const (
 	// dbusPathEtc is the default path for dbus machine id located in /etc.
 	// Some systems (like Fedora 20) only know this path.
@@ -13,6 +15,7 @@ const (
 	dbusPath = "/sys/class/dmi/id/product_uuid"
 )
 
+// https://github.com/denisbrodbeck/machineid/blob/master/id_linux.go
 func machineID() (string, error) {
 	b, err := os.ReadFile(dbusPathEtc)
 	if err != nil || len(b) == 0 {

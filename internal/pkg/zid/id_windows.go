@@ -3,6 +3,11 @@
 
 package zid
 
+import (
+	"golang.org/x/sys/windows/registry"
+)
+
+// https://github.com/denisbrodbeck/machineid/blob/master/id_windows.go
 // machineID returns the key MachineGuid in registry `HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography`.
 // If there is an error running the commad an empty string is returned.
 func machineID() (string, error) {

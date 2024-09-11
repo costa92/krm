@@ -3,6 +3,8 @@
 
 package zid
 
+import "testing"
+
 func TestMachineID(t *testing.T) {
 	t.Log(machineID())
 }
