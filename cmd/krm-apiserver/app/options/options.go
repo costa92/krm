@@ -32,8 +32,7 @@ func NewServerRunOptions() *ServerRunOptions {
 	return o
 }
 
-// CompletedOptions contains the completed options for running the server.
-
+// Flags returns the flags for the ServerRunOptions.
 func (o ServerRunOptions) Flags() (fss cliflag.NamedFlagSets) {
 	o.Options.AddFlags(&fss)
 
@@ -41,6 +40,6 @@ func (o ServerRunOptions) Flags() (fss cliflag.NamedFlagSets) {
 	// Add flags for the misc flagset.
 	fs.IntVar(&o.MasterCount, "apiserver-count", o.MasterCount,
 		"The number of apiservers running in the cluster, must be a positive number. (In use when --endpoint-reconciler-type=master-count is enabled.)")
-	fs.MarkDeprecated("apiserver-count", "apiserver-count is deprecated and will be removed in a future version.")
+	_ = fs.MarkDeprecated("apiserver-count", "apiserver-count is deprecated and will be removed in a future version.")
 	return fss
 }

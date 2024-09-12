@@ -22,23 +22,23 @@ type CompletedOptions struct {
 	*completedOptions
 }
 
+// Complete set default ServerRunOptions.
+// Should be called after krm-apiserver flags parsed.
 func (o *ServerRunOptions) Complete() (CompletedOptions, error) {
 	if o == nil {
-		return CompletedOptions{
-			completedOptions: &completedOptions{},
-		}, nil
+		return CompletedOptions{completedOptions: &completedOptions{}}, nil
 	}
-	controlplane, err := o.Options.Complete()
+
+	controllable, err := o.Options.Complete()
 	if err != nil {
 		return CompletedOptions{}, err
 	}
 
+	// zh: completed 是一个结构体，包含了完成选项和额外选项。
 	completed := completedOptions{
-		CompletedOptions: controlplane,
+		CompletedOptions: controllable,
 		Extra:            o.Extra,
 	}
 
-	return CompletedOptions{
-		&completed,
-	}, nil
+	return CompletedOptions{&completed}, nil
 }
