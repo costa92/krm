@@ -83,6 +83,7 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/emicklei/go-restful/v3 v3.11.0 // indirect
+	github.com/evanphx/json-patch v5.6.0+incompatible // indirect
 	github.com/fatih/color v1.17.0 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
@@ -230,8 +231,31 @@ require (
 )
 
 replace (
+	k8s.io/apiserver => k8s.io/apiserver v0.30.2
+	k8s.io/cli-runtime => k8s.io/cli-runtime v0.30.2
+	k8s.io/cloud-provider => k8s.io/cloud-provider v0.30.2
+	k8s.io/cluster-bootstrap => k8s.io/cluster-bootstrap v0.30.2
+	k8s.io/code-generator => k8s.io/code-generator v0.30.2
+	k8s.io/component-base => k8s.io/component-base v0.30.2
+	k8s.io/component-helpers => k8s.io/component-helpers v0.30.2
+	k8s.io/controller-manager => k8s.io/controller-manager v0.30.2
+	k8s.io/cri-api => k8s.io/cri-api v0.30.2
+	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.30.2
+	k8s.io/dynamic-resource-allocation => k8s.io/dynamic-resource-allocation v0.30.2
+	k8s.io/endpointslice => k8s.io/endpointslice v0.30.2
+	k8s.io/kms => k8s.io/kms v0.30.2
 	//google.golang.org/grpc => google.golang.org/grpc v1.58.3
 	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.31.0
+	k8s.io/kube-controller-manager => k8s.io/kube-controller-manager v0.30.2
+	k8s.io/kube-proxy => k8s.io/kube-proxy v0.30.2
+	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.30.2
+	k8s.io/kubectl => k8s.io/kubectl v0.30.2
+	k8s.io/kubelet => k8s.io/kubelet v0.30.2
 	// k8s.io/kubernetes 经常会被自动变更为v1.15.0-alpha.0，这里使用replace解决掉
-	k8s.io/kubernetes => k8s.io/kubernetes v1.29.8
+	k8s.io/kubernetes => k8s.io/kubernetes v1.30.2
+	k8s.io/legacy-cloud-providers => k8s.io/legacy-cloud-providers v0.30.2
+	k8s.io/metrics => k8s.io/metrics v0.30.2
+	k8s.io/mount-utils => k8s.io/mount-utils v0.30.2
+	k8s.io/pod-security-admission => k8s.io/pod-security-admission v0.30.2
+	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.30.2
 )
