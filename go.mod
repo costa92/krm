@@ -233,5 +233,5 @@ replace (
 	//google.golang.org/grpc => google.golang.org/grpc v1.58.3
 	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.31.0
 	// k8s.io/kubernetes 经常会被自动变更为v1.15.0-alpha.0，这里使用replace解决掉
-	k8s.io/kubernetes => k8s.io/kubernetes v1.30.5
+	k8s.io/kubernetes => k8s.io/kubernetes v1.29.8
 )
