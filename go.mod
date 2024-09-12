@@ -68,7 +68,7 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/NYTimes/gziphandler v1.1.1 // indirect
-	github.com/antlr4-go/antlr/v4 v4.13.0 // indirect
+	github.com/antlr/antlr4/runtime/Go/antlr/v4 v4.0.0-20230305170008-8188dc5388df // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/blang/semver/v4 v4.0.0 // indirect
@@ -152,6 +152,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
+	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/microsoft/go-mssqldb v0.17.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -228,9 +229,14 @@ require (
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
+
 )
 
 replace (
+	github.com/google/cel-go => github.com/google/cel-go v0.17.8
+	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.17.0
+	github.com/prometheus/client_model => github.com/prometheus/client_model v0.5.0
+	github.com/prometheus/common => github.com/prometheus/common v0.44.0 // indirect
 	k8s.io/apiserver => k8s.io/apiserver v0.30.2
 	k8s.io/cli-runtime => k8s.io/cli-runtime v0.30.2
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.30.2
@@ -258,4 +264,5 @@ replace (
 	k8s.io/mount-utils => k8s.io/mount-utils v0.30.2
 	k8s.io/pod-security-admission => k8s.io/pod-security-admission v0.30.2
 	k8s.io/sample-apiserver => k8s.io/sample-apiserver v0.30.2
+	sigs.k8s.io/apiserver-network-proxy/konnectivity-client => sigs.k8s.io/apiserver-network-proxy/konnectivity-client v0.29.0
 )
