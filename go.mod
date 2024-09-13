@@ -54,10 +54,10 @@ require (
 	gorm.io/driver/mysql v1.5.1-0.20230509030346-3715c134c25b
 	gorm.io/gorm v1.25.11
 	k8s.io/apiextensions-apiserver v0.30.2
-	k8s.io/apimachinery v0.31.0
-	k8s.io/apiserver v0.31.0
-	k8s.io/client-go v0.31.0
-	k8s.io/component-base v0.31.0
+	k8s.io/apimachinery v0.30.2
+	k8s.io/apiserver v0.30.2
+	k8s.io/client-go v0.30.2
+	k8s.io/component-base v0.30.2
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kube-aggregator v0.0.0
 	k8s.io/kubernetes v0.0.0-00010101000000-000000000000
@@ -209,7 +209,6 @@ require (
 	golang.org/x/term v0.23.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240826202546-f6391c0de4c7 // indirect
-	gopkg.in/evanphx/json-patch.v4 v4.12.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
@@ -217,6 +216,7 @@ require (
 	gorm.io/driver/postgres v1.4.5 // indirect
 	gorm.io/driver/sqlserver v1.4.1 // indirect
 	gorm.io/plugin/dbresolver v1.3.0 // indirect
+	k8s.io/api v0.30.2 // indirect
 	k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340 // indirect
 	modernc.org/libc v1.19.0 // indirect
 	modernc.org/mathutil v1.5.0 // indirect
@@ -234,8 +234,8 @@ replace (
 	github.com/prometheus/client_golang => github.com/prometheus/client_golang v1.17.0
 	github.com/prometheus/client_model => github.com/prometheus/client_model v0.5.0
 	github.com/prometheus/common => github.com/prometheus/common v0.44.0 // indirect
-	k8s.io/apimachinery => k8s.io/apimachinery v0.30.2
 	k8s.io/api => k8s.io/api v0.30.2
+	k8s.io/apimachinery => k8s.io/apimachinery v0.30.2
 	k8s.io/apiserver => k8s.io/apiserver v0.30.2
 	k8s.io/cli-runtime => k8s.io/cli-runtime v0.30.2
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.30.2
@@ -250,7 +250,7 @@ replace (
 	k8s.io/endpointslice => k8s.io/endpointslice v0.30.2
 	k8s.io/kms => k8s.io/kms v0.30.2
 	//google.golang.org/grpc => google.golang.org/grpc v1.58.3
-	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.31.0
+	k8s.io/kube-aggregator => k8s.io/kube-aggregator v0.30.2
 	k8s.io/kube-controller-manager => k8s.io/kube-controller-manager v0.30.2
 	k8s.io/kube-proxy => k8s.io/kube-proxy v0.30.2
 	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.30.2
