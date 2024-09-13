@@ -2,12 +2,18 @@ package app
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"github.com/costa92/krm/cmd/krm-apiserver/app/options"
+	"github.com/costa92/krm/internal/controlplane"
+	controlplaneapiserver "github.com/costa92/krm/internal/controlplane/apiserver"
 	"github.com/costa92/krm/pkg/version"
 	"github.com/spf13/cobra"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	extensionsapiserver "k8s.io/apiextensions-apiserver/pkg/apiserver"
+	"k8s.io/apimachinery/pkg/runtime"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
+	utilnet "k8s.io/apimachinery/pkg/util/net"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	genericapifilters "k8s.io/apiserver/pkg/endpoints/filters"
 	genericapiserver "k8s.io/apiserver/pkg/server"
@@ -20,6 +26,9 @@ import (
 	"k8s.io/component-base/term"
 	"k8s.io/klog/v2"
 	aggregatorapiserver "k8s.io/kube-aggregator/pkg/apiserver"
+	aggregatorscheme "k8s.io/kube-aggregator/pkg/apiserver/scheme"
+	"k8s.io/kubernetes/pkg/api/legacyscheme"
+	"net/http"
 )
 
 const appName = "krm-apiserver"
@@ -120,7 +129,7 @@ func Run(ctx context.Context, opts options.CompletedOptions, stopCh <-chan struc
 		return err
 	}
 	// Run the server
-	return prepared.Run(ctx)
+	return prepared.Run(stopCh)
 }
 
 func CreateServerChain(config CompletedConfig) (*aggregatorapiserver.APIAggregator, error) {
@@ -142,4 +151,34 @@ func CreateServerChain(config CompletedConfig) (*aggregatorapiserver.APIAggregat
 	aggregatorServer, err := createAggregatorServer(config.Aggregator, krmAPIServer.GenericAPIServer, apiExtensionsServer.Informers, crdAPIEnabled)
 
 	return aggregatorServer, nil
+}
+
+func CreateProxyTransport() *http.Transport {
+	var proxyDialerFn utilnet.DialFunc
+	// Proxying to pods and services is IP-based... don't expect to be able to verify the hostname
+	proxyTLSClientConfig := &tls.Config{InsecureSkipVerify: true}
+	proxyTransport := utilnet.SetTransportDefaults(&http.Transport{
+		DialContext:     proxyDialerFn,
+		TLSClientConfig: proxyTLSClientConfig,
+	})
+	return proxyTransport
+}
+
+// CreateKrmAPIServerConfig creates the configuration for the KRM API server.
+func CreateKrmAPIServerConfig(opts options.CompletedOptions) (
+	*controlplane.Config,
+	aggregatorapiserver.ServiceResolver,
+	error,
+) {
+	proxyTransport := CreateProxyTransport()
+
+	generiConfig, _, kubeSharedInformers, err := controlplaneapiserver.BuildGenericConfig(
+		opts.CompletedOptions,
+		[]*runtime.Scheme{legacyscheme.Scheme, extensionsapiserver.Scheme, aggregatorscheme.Scheme},
+		opts.GetOpenAPIDefinitions,
+	)
+	if err != nil {
+		return nil, nil, err
+	}
+	return nil, nil, nil
 }

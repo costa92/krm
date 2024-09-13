@@ -54,5 +54,10 @@ func NewConfig(opts options.CompletedOptions) (*Config, error) {
 	c := &Config{
 		Options: opts,
 	}
+
+	controlPlane, serviceResolver, err := CreateKrmAPIServerConfig(opts)
+	if err != nil {
+		return nil, err
+	}
 	return c, nil
 }

@@ -4,6 +4,7 @@ import (
 	controlplaneoptions "github.com/costa92/krm/internal/controlplane/apiserver/options"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	cliflag "k8s.io/component-base/cli/flag"
+	"k8s.io/kube-openapi/pkg/common"
 )
 
 // ServerRunOptions contains the options for running the server.
@@ -18,6 +19,7 @@ type Extra struct {
 
 	// For external resources
 	ExternalPostStartHooks map[string]genericapiserver.PostStartHookFunc
+	GetOpenAPIDefinitions  common.GetOpenAPIDefinitions
 }
 
 // NewServerRunOptions returns a new ServerRunOptions.
