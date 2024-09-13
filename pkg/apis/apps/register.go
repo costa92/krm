@@ -3,6 +3,7 @@ package apps
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/kubernetes/pkg/apis/autoscaling"
 )
 
 var (
@@ -29,6 +30,13 @@ func Resource(resource string) schema.GroupResource {
 }
 
 func addKnownTypes(scheme *runtime.Scheme) error {
-	scheme.AddKnownTypes(SchemeGroupVersion)
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&Chain{},
+		&ChainList{},
+		&Miner{},
+		&MinerList{},
+		&MinerSet{},
+		&MinerSetList{},
+		&autoscaling.Scale{})
 	return nil
 }
