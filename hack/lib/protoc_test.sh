@@ -2,8 +2,8 @@
 
 
 KRM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)"
-source "${KRM_ROOT}/scripts/lib/init.sh"
-source "${KRM_ROOT}/scripts/lib/protoc.sh"
+source "${KRM_ROOT}/hack/lib/init.sh"
+source "${KRM_ROOT}/hack/lib/protoc.sh"
 
 
 #krm::protoc::install

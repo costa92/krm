@@ -7,8 +7,8 @@ all: format tidy gen add-copyright lint cover build
 
 # ==================================
 # include
-include scripts/make-rules/common.mk
-include scripts/make-rules/all.mk
+include hack/make-rules/common.mk
+include hack/make-rules/all.mk
 
 # ==================================
 # Usage
@@ -40,7 +40,12 @@ endif
 protoc: ## Generate api proto files.
 	$(MAKE) gen.protoc
 
-
+.PHONY: gen-k8s
+gen-k8s: ## Generate k8s api files.
+	@$(KRM_ROOT)/hack/update-codegen.sh
+	# The following command is old generate way with makefile script.
+	# Comment here as a code history.
+	# $(MAKE) -s generated.files
 
 .PHONY: tidy
 tidy:

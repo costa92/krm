@@ -8,7 +8,7 @@ set -o pipefail
 
 # The root of the build/dist directory
 KRM_ROOT=$(dirname "${BASH_SOURCE[0]}")/../..
-source "${KRM_ROOT}/scripts/lib/init.sh"
+source "${KRM_ROOT}/hack/lib/init.sh"
 
 # protocVersion is the version of protoc to install.
 # shellcheck disable=SC2034
@@ -75,7 +75,7 @@ function krm::protoc::format() {
 function krm::protoc::check_protoc() {
   if [[ -z "$(/usr/bin/which protoc)" || "$(protoc --version)" != "libprotoc ${PROTOC_VERSION}"* ]]; then
     echo "Generating protobuf requires protoc ${PROTOC_VERSION}."
-    echo "Run scripts/install-protoc.sh or download and install the"
+    echo "Run hack/install-protoc.sh or download and install the"
     echo "platform-appropriate Protobuf package for your OS from"
     echo "https://github.com/protocolbuffers/protobuf/releases"
     return 1

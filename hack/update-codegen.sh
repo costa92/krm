@@ -9,8 +9,8 @@ KUBE_VERBOSE="${KUBE_VERBOSE:-1}"
 
 KRM_ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 
-source "${KRM_ROOT}/scripts/lib/init.sh"
-source "${KRM_ROOT}/scripts/lib/protoc.sh"
+source "${KRM_ROOT}/hack/lib/init.sh"
+source "${KRM_ROOT}/hack/lib/protoc.sh"
 
 krm::golang::setup_env
 
@@ -22,7 +22,7 @@ API_KNOWN_VIOLATIONS_DIR="${API_KNOWN_VIOLATIONS_DIR:-"${KRM_ROOT}/api/api-rules
 
 OUT_DIR="_output"
 KRM_MODULE_NAME="github.com/costa92/krm"
-BOILERPLATE_FILENAME="${KRM_ROOT}/scripts/boilerplate/boilerplate.generatego.txt"
+BOILERPLATE_FILENAME="${KRM_ROOT}/hack/boilerplate/boilerplate.generatego.txt"
 PLURAL_EXCEPTIONS="Endpoints:Endpoints,ResourceClaimParameters:ResourceClaimParameters,ResourceClassParameters:ResourceClassParameters"
 OUTPUT_PKG="github.com/costa92/krm/pkg/generated"
 EXTRA_GENERATE_PKG=(k8s.io/api/core/v1 k8s.io/api/coordination/v1 k8s.io/api/flowcontrol/v1 k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1)
@@ -94,9 +94,8 @@ fi
 # first in the case of regenerating everything.
 function codegen::protobuf() {
     # NOTE: All output from this script needs to be copied back to the calling
-    # source tree.  This is managed in onex::build::copy_output in build/common.sh.
+    # source tree.  This is managed in krm::build::copy_output in build/common.sh.
     # If the output set is changed update that function.
-    echo 11
     local apis=()
     krm::util::read-array apis < <(
         git grep --untracked --null -l \
@@ -116,7 +115,7 @@ function codegen::protobuf() {
     fi
     # NOTICE: must include k8s.io/api/core/v1, otherwise it will generate the message ObjectReference
     # in pkg/apis/apps/v1beta1/generated.proto, which will cause a compilation error when compiling
-    # onex-apiserver: undefined: ObjectReference.
+    # krm-apiserver: undefined: ObjectReference.
     apis+=("${EXTRA_GENERATE_PKG}")
 
     # Comment this out, otherwise it will delete some useful protobuf files.
@@ -133,5 +132,139 @@ function codegen::protobuf() {
     fi
 
     # Fix `pkg/apis/apps/v1beta1/generated.pb.go:49:10: undefined: ObjectReference` compile errors
-    # cp ${KRM_ROOT}/manifests/generated.pb.go.fix ${ONEX_ROOT}/pkg/apis/apps/v1beta1/generated.pb.go
+    # cp ${KRM_ROOT}/manifests/generated.pb.go.fix ${krm_ROOT}/pkg/apis/apps/v1beta1/generated.pb.go
 }
+
+# Deep-copy generation
+#
+# Any package that wants deep-copy functions generated must include a
+# comment-tag in column 0 of one file of the form:
+#     // +k8s:deepcopy-gen=<VALUE>
+#
+# The <VALUE> may be one of:
+#     generate: generate deep-copy functions into the package
+#     register: generate deep-copy functions and register them with a
+#               scheme
+function codegen::deepcopy() {
+ # Build the tool.
+    GOPROXY=off go install \
+        k8s.io/code-generator/cmd/deepcopy-gen
+
+    # The result file, in each pkg, of deep-copy generation.
+    local output_file="${GENERATED_FILE_PREFIX}deepcopy.go"
+
+    # Find all the directories that request deep-copy generation.
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        krm::log::status "DBG: finding all +k8s:deepcopy-gen tags"
+    fi
+    local tag_dirs=()
+    krm::util::read-array tag_dirs < <( \
+        grep -l --null '+k8s:deepcopy-gen=' "${ALL_K8S_TAG_FILES[@]}" \
+            | while read -r -d $'\0' F; do dirname "${F}"; done \
+            | sort -u)
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        k'r'm::log::status "DBG: found ${#tag_dirs[@]} +k8s:deepcopy-gen tagged dirs"
+    fi
+
+    local tag_pkgs=()
+    for dir in "${tag_dirs[@]}"; do
+        tag_pkgs+=("./$dir")
+    done
+
+    krm::log::status "Generating deepcopy code for ${#tag_pkgs[@]} targets"
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        krm::log::status "DBG: running deepcopy-gen for:"
+        for dir in "${tag_dirs[@]}"; do
+            krm::log::status "DBG:     $dir"
+        done
+    fi
+
+    git_find -z ':(glob)**'/"${output_file}" | xargs -0 rm -f
+
+    deepcopy-gen \
+        -v "${KUBE_VERBOSE}" \
+        --go-header-file "${BOILERPLATE_FILENAME}" \
+        --output-file "${output_file}" \
+        --bounding-dirs "${KRM_MODULE_NAME},k8s.io/api" \
+        "${tag_pkgs[@]}" \
+        "$@"
+
+    if [[ "${DBG_CODEGEN}" == 1 ]]; then
+        krm::log::status "Generated deepcopy code"
+    fi
+}
+
+
+function list_codegens() {
+    (
+        shopt -s extdebug
+        declare -F \
+            | cut -f3 -d' ' \
+            | grep "^codegen::" \
+            | while read -r fn; do declare -F "$fn"; done \
+            | sort -n -k2 \
+            | cut -f1 -d' ' \
+            | sed 's/^codegen:://'
+    )
+}
+
+# shellcheck disable=SC2207 # safe, no functions have spaces
+all_codegens=($(list_codegens))
+
+
+
+function print_codegens() {
+    echo "available codegens:"
+    for g in "${all_codegens[@]}"; do
+        echo "    $g"
+    done
+}
+
+
+# Validate and accumulate flags to pass thru and codegens to run if args are
+# specified.
+flags_to_pass=()
+codegens_to_run=()
+for arg; do
+    # Use -? to list known codegens.
+    if [[ "${arg}" == "-?" ]]; then
+        print_codegens
+        exit 0
+    fi
+    if [[ "${arg}" =~ ^- ]]; then
+        flags_to_pass+=("${arg}")
+        continue
+    fi
+    # Make sure each non-flag arg matches at least one codegen.
+    nmatches=0
+    for t in "${all_codegens[@]}"; do
+        if [[ "$t" =~ ${arg} ]]; then
+            nmatches=$((nmatches+1))
+            # Don't run codegens twice, just keep the first match.
+            # shellcheck disable=SC2076 # we want literal matching
+            if [[ " ${codegens_to_run[*]} " =~ " $t " ]]; then
+                continue
+            fi
+            codegens_to_run+=("$t")
+            continue
+        fi
+    done
+    if [[ ${nmatches} == 0 ]]; then
+        echo "ERROR: no codegens match pattern '${arg}'"
+        echo
+        print_codegens
+        exit 1
+    fi
+    # The array-syntax abomination is to accommodate older bash.
+    codegens_to_run+=("${matches[@]:+"${matches[@]}"}")
+done
+
+# If no codegens were specified, run them all.
+if [[ "${#codegens_to_run[@]}" == 0 ]]; then
+    codegens_to_run=("${all_codegens[@]}")
+fi
+
+for g in "${codegens_to_run[@]}"; do
+    # The array-syntax abomination is to accommodate older bash.
+    "codegen::${g}" "${flags_to_pass[@]:+"${flags_to_pass[@]}"}"
+done 

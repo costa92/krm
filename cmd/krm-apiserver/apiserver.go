@@ -1,9 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/costa92/krm/cmd/krm-apiserver/app"
 	"k8s.io/component-base/cli"
-	"os"
 )
 
 func main() {

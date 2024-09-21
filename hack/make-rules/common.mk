@@ -8,7 +8,7 @@ KRM_ROOT :=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 endif
 
 
-include $(KRM_ROOT)/scripts/make-rules/common-versions.mk
+include $(KRM_ROOT)/hack/make-rules/common-versions.mk
 
 
 # It's necessary to set this because some environments don't link sh -> bash.
@@ -134,7 +134,7 @@ $(info ===========> Installing $(1)@$(2))
 $(GO) install $(1)@$(2)
 endef
 
-SCRIPTS_DIR=$(KRM_ROOT)/scripts
+SCRIPTS_DIR=$(KRM_ROOT)/hack
 GENERATED_DOCKERFILE_DIR=$(KRM_ROOT)/build/docker
 
 # Kubernetes releated variables.

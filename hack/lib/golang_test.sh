@@ -3,6 +3,6 @@
 
 
 KRM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)"
-source "${KRM_ROOT}/scripts/lib/init.sh"
+source "${KRM_ROOT}/hack/lib/init.sh"
 
 krm::golang::setup_env

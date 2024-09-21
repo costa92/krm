@@ -22,12 +22,12 @@ KRM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd -P)"
 KRM_OUTPUT_SUBPATH="${KRM_OUTPUT_SUBPATH:-_output}"
 KRM_OUTPUT="${KRM_ROOT}/${KRM__OUTPUT_SUBPATH}"
 
-source "${KRM_ROOT}/scripts/lib/util.sh"
-source "${KRM_ROOT}/scripts/lib/logging.sh"
-source "${KRM_ROOT}/scripts/lib/color.sh"
+source "${KRM_ROOT}/hack/lib/util.sh"
+source "${KRM_ROOT}/hack/lib/logging.sh"
+source "${KRM_ROOT}/hack/lib/color.sh"
 
 
-source "${KRM_ROOT}/scripts/lib/golang.sh"
+source "${KRM_ROOT}/hack/lib/golang.sh"
 
 
 
