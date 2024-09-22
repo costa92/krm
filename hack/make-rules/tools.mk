@@ -1,7 +1,8 @@
 #  Makefile helper functions for tools
 
 # 安装 k8s 代码生成器
-CODE_GENERATOR_TOOLS= client-gen
+CODE_GENERATOR_TOOLS= client-gen conversion-gen deepcopy-gen defaulter-gen informer-gen lister-gen prerelease-lifecycle-gen \
+					  register-gen applyconfiguration-gen go-to-protobuf
 
 # code-generator is a makefile target not a real tool.
 CI_WORKFLOW_TOOLS := code-generator golangci-lint goimports wire

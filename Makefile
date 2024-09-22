@@ -40,12 +40,16 @@ endif
 protoc: ## Generate api proto files.
 	$(MAKE) gen.protoc
 
+ARGS = $(filter-out $@,$(MAKECMDGOALS))
+
 .PHONY: gen-k8s
 gen-k8s: ## Generate k8s api files.
 	@$(KRM_ROOT)/hack/update-codegen.sh
 	# The following command is old generate way with makefile script.
 	# Comment here as a code history.
 	# $(MAKE) -s generated.files
+
+
 
 .PHONY: tidy
 tidy:

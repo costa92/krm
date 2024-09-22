@@ -58,6 +58,7 @@ require (
 	k8s.io/apimachinery v0.30.2
 	k8s.io/apiserver v0.30.2
 	k8s.io/client-go v0.30.2
+	k8s.io/code-generator v0.30.2
 	k8s.io/component-base v0.30.2
 	k8s.io/klog/v2 v2.130.1
 	k8s.io/kube-aggregator v0.0.0
@@ -212,6 +213,7 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/exp v0.0.0-20240823005443-9b4947da3948 // indirect
+	golang.org/x/mod v0.20.0 // indirect
 	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/oauth2 v0.21.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
@@ -232,6 +234,7 @@ require (
 	k8s.io/component-helpers v0.30.2 // indirect
 	k8s.io/controller-manager v0.30.2 // indirect
 	k8s.io/dynamic-resource-allocation v0.0.0 // indirect
+	k8s.io/gengo/v2 v2.0.0-20240228010128-51d4e06bde70 // indirect
 	k8s.io/kms v0.30.2 // indirect
 	k8s.io/kubelet v0.30.2 // indirect
 	k8s.io/mount-utils v0.0.0 // indirect
