@@ -29,6 +29,13 @@ source "${KRM_ROOT}/hack/lib/color.sh"
 
 source "${KRM_ROOT}/hack/lib/golang.sh"
 
+# list of all available group versions. This should be used when generated code
+# or when starting an API server that you want to have everything.
+# most preferred version for a group should appear first
+# UPDATEME: New group need to update here.
+KRM_AVAILABLE_GROUP_VERSIONS="${KRM_AVAILABLE_GROUP_VERSIONS:-\
+apps/v1beta1 \
+}"
 
 
 # Marker function to indicate init.sh has been fully sourced
