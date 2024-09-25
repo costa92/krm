@@ -1,10 +1,11 @@
-package v1beta1
+// +k8s:openapi-gen=true
+// +k8s:deepcopy-gen=package
+// +k8s:protobuf-gen=package
+// +k8s:conversion-gen=github.com/costa92/krm/pkg/apis/apps
+// +k8s:conversion-gen=k8s.io/kubernetes/pkg/apis/autoscaling
+// +k8s:conversion-gen=k8s.io/kubernetes/pkg/apis/core
+// +k8s:conversion-gen-external-types=github.com/costa92/krm/pkg/apis/apps/v1beta1
+// +k8s:defaulter-gen=TypeMeta
+// +groupName=apps.onex.io
 
-import (
-	"k8s.io/apimachinery/pkg/runtime/schema"
-)
-
-var (
-	// GroupVersion is group version used to register these objects
-	GroupVersion = schema.GroupVersion{Group: "apps.krm.io", Version: "v1beta1"}
-)
+package v1beta1 // import "github.com/costa92/krm/pkg/apis/apps/v1beta1"
