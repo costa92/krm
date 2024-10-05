@@ -1,16 +1,16 @@
 // Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
-// this file is https://github.com/superproj/onex.
+// this file is https://github.com/costa92/krm.
 package options
 
 import (
 	"time"
 
+	"github.com/costa92/krm/pkg/db"
 	"github.com/redis/go-redis/extra/rediscensus/v9"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/pflag"
-	"github.com/superproj/onex/pkg/db"
 )
 
 var _ IOptions = (*RedisOptions)(nil)

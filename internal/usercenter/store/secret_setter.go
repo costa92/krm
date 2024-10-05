@@ -1,7 +1,7 @@
 // Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
-// this file is https://github.com/superproj/onex.
+// this file is https://github.com/costa92/krm.
 package store
 
 import (
@@ -15,7 +15,7 @@ import (
 )
 
 // secretSetter is an implementation of the
-// `github.com/superproj/onex/internal/usercenter/auth.TemporarySecretSetter` interface. It used to set
+// `github.com/costa92/krm/internal/usercenter/auth.TemporarySecretSetter` interface. It used to set
 // a temporary key for a user. Each user has only one temporary key.
 type secretSetter struct {
 	ds *datastore

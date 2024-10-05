@@ -225,12 +225,12 @@ function codegen::clients() {
     GOPROXY=off go install \
         k8s.io/code-generator/cmd/client-gen
 
-    IFS=" " read -r -a group_versions <<< "${ONEX_AVAILABLE_GROUP_VERSIONS}"
+    IFS=" " read -r -a group_versions <<< "${KRM_AVAILABLE_GROUP_VERSIONS}"
     local gv_dirs=()
     for gv in "${group_versions[@]}"; do
         # add items, but strip off any leading apis/ you find to match command expectations
         local api_dir
-        api_dir=$(krm::log::group-version-to-pkg-path "${gv}")
+        api_dir=$(krm::util::group-version-to-pkg-path "${gv}")
         local nopkg_dir=${api_dir#pkg/}
         nopkg_dir=${nopkg_dir#staging/src/k8s.io/api/}
         local pkg_dir=${nopkg_dir#apis/}

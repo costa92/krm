@@ -697,8 +697,8 @@ github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsT
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 github.com/subosito/gotenv v1.6.0 h1:9NlTDc1FTs4qu0DDq7AEtTPNw6SVm7uBMsUCUjABIf8=
 github.com/subosito/gotenv v1.6.0/go.mod h1:Dk4QP5c2W3ibzajGcXpNraDfq2IrhjMIvMSWPKKo0FU=
-github.com/superproj/onex v0.2.0 h1:IHYTTa2OMGok5TUWZuK/TJWCnTVoNYyTpJvMwZuXuaA=
-github.com/superproj/onex v0.2.0/go.mod h1:QPKat7wxdHQzl+p52gciozPkAZUq8ZAkUFDHkwkENQ4=
+github.com/costa92/krm v0.2.0 h1:IHYTTa2OMGok5TUWZuK/TJWCnTVoNYyTpJvMwZuXuaA=
+github.com/costa92/krm v0.2.0/go.mod h1:QPKat7wxdHQzl+p52gciozPkAZUq8ZAkUFDHkwkENQ4=
 github.com/tklauser/go-sysconf v0.3.11 h1:89WgdJhk5SNwJfu+GKyYveZ4IaJ7xAkecBo+KdJV0CM=
 github.com/tklauser/go-sysconf v0.3.11/go.mod h1:GqXfhXY3kiPa0nAXPDIQIWzJbMCB7AmcWpGR8lSZfqI=
 github.com/tklauser/numcpus v0.6.0/go.mod h1:FEZLMke0lhOUG6w2JadTzp0a+Nl8PF/GFkQ5UVIcaL4=

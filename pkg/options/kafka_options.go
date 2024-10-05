@@ -1,7 +1,7 @@
 // Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
-// this file is https://github.com/superproj/onex.
+// this file is https://github.com/costa92/krm.
 package options
 
 import (
@@ -10,13 +10,13 @@ import (
 	"strings"
 	"time"
 
+	stringsutil "github.com/costa92/krm/pkg/util/strings"
 	"github.com/segmentio/kafka-go"
 	"github.com/segmentio/kafka-go/sasl"
 	"github.com/segmentio/kafka-go/sasl/plain"
 	"github.com/segmentio/kafka-go/sasl/scram"
 	"github.com/segmentio/kafka-go/snappy"
 	"github.com/spf13/pflag"
-	stringsutil "github.com/superproj/onex/pkg/util/strings"
 	"k8s.io/klog/v2"
 )
 

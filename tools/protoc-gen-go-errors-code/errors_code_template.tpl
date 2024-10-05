@@ -28,4 +28,4 @@
 
 ## 参考
 
-- [错误规范](https://github.com/superproj/onex/blob/master/docs/devel/zh-CN/conversions/errors.md)
+- [错误规范](https://github.com/costa92/krm/blob/master/docs/devel/zh-CN/conversions/errors.md)

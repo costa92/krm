@@ -1,5 +1,20 @@
 package v1beta1
 
+// MinerAddressType describes a valid MinerAddress type.
+type MinerAddressType string
+
+// MinerAddress contains information for the miner's address.
+type MinerAddress struct {
+	// Miner address type, one of Hostname, ExternalIP or InternalIP.
+	Type MinerAddressType `json:"type" protobuf:"bytes,1,opt,name=type,casttype=MinerAddressType"`
+
+	// The machine address.
+	Address string `json:"address" protobuf:"bytes,2,opt,name=address"`
+}
+
+// MinerAddresses is a slice of MinerAddress items to be used by infrastructure providers.
+type MinerAddresses []MinerAddress
+
 type ObjectMeta struct {
 	// Map of string keys and values that can be used to organize and categorize
 	// (scope and select) objects. May match selectors of replication controllers
