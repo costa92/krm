@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Controls verbosity of the script output and logging.
-KUBE_VERBOSE="${KUBE_VERBOSE:-2}"
+KUBE_VERBOSE="${KUBE_VERBOSE:-1}"
 
 # Handler for when we exit automatically on an error.
 # Borrowed from https://gist.github.com/ahendrix/7030300

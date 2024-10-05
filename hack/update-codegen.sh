@@ -361,6 +361,7 @@ function todo::codegen::openapi() {
 
 
 function codegen::informers() {
+    echo "start codegen::informers"
     if ! command -v gen-swaggertype-docs &> /dev/null ; then
         GOPROXY=off go install k8s.io/code-generator/cmd/informer-gen
     fi
@@ -387,6 +388,19 @@ function codegen::informers() {
         ':(glob)pkg/generated/**/*.go' \
         || true) \
         | xargs -0 rm -f
+
+    #  打印 informer-gen 执行命令
+    echo "informer-gen \\
+        -v \"${KUBE_VERBOSE}\" \\
+        --go-header-file \"${BOILERPLATE_FILENAME}\" \\
+        --output-dir \"${KRM_ROOT}/pkg/generated/informers\" \\
+        --output-pkg \"${OUTPUT_PKG}/informers\" \\
+        --single-directory \\
+        --versioned-clientset-package \"${OUTPUT_PKG}/clientset/versioned\" \\
+        --listers-package \"${OUTPUT_PKG}/listers\" \\
+        --plural-exceptions \"${PLURAL_EXCEPTIONS}\" \\
+        \"${ext_apis[@]}\" \\
+        \"$@\""
 
     informer-gen \
         -v "${KUBE_VERBOSE}" \
@@ -444,6 +458,16 @@ function codegen::listers() {
         | xargs -0 rm -f
 
         # --included-types-overrides core/v1/Namespace,core/v1/ConfigMap,core/v1/Event,core/v1/Secret \
+    #  打印 lister-gen 执行命令
+    echo "lister-gen \\
+        -v \"${KUBE_VERBOSE}\" \\
+        --go-header-file \"${BOILERPLATE_FILENAME}\" \\
+        --output-dir \"${KRM_ROOT}/pkg/generated/listers\" \\
+        --output-pkg \"${OUTPUT_PKG}/listers\" \\
+        --plural-exceptions \"${PLURAL_EXCEPTIONS}\" \\
+        \"${ext_apis[@]}\" \\
+        \"$@\""
+        
     lister-gen \
         -v "${KUBE_VERBOSE}" \
         --go-header-file "${BOILERPLATE_FILENAME}" \
@@ -511,6 +535,7 @@ for arg; do
         print_codegens
         exit 0
     fi
+    # Accumulate flags to pass thru.
     if [[ "${arg}" =~ ^- ]]; then
         flags_to_pass+=("${arg}")
         continue
