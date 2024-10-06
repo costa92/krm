@@ -1,4 +1,4 @@
-// Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+// Copyright 2024 Qiuhong Long <costa9293@gmail.com>. All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/costa92/krm.
@@ -10,21 +10,21 @@ package v1beta1
 import (
 	v1beta1 "github.com/costa92/krm/pkg/apis/apps/v1beta1"
 	errors "github.com/costa92/krm/pkg/errors"
-	v1 "github.com/costa92/krm/pkg/generated/applyconfigurations/core/v1"
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // MinerStatusApplyConfiguration represents an declarative configuration of the MinerStatus type for use
 // with apply.
 type MinerStatusApplyConfiguration struct {
-	PodRef             *v1.ObjectReferenceApplyConfiguration `json:"podRef,omitempty"`
-	LastUpdated        *metav1.Time                          `json:"lastUpdated,omitempty"`
-	FailureReason      *errors.MinerStatusError              `json:"failureReason,omitempty"`
-	FailureMessage     *string                               `json:"failureMessage,omitempty"`
-	Addresses          *v1beta1.MinerAddresses               `json:"addresses,omitempty"`
-	Phase              *string                               `json:"phase,omitempty"`
-	ObservedGeneration *int64                                `json:"observedGeneration,omitempty"`
-	Conditions         *v1beta1.Conditions                   `json:"conditions,omitempty"`
+	PodRef             *v1.ObjectReference      `json:"podRef,omitempty"`
+	LastUpdated        *metav1.Time             `json:"lastUpdated,omitempty"`
+	FailureReason      *errors.MinerStatusError `json:"failureReason,omitempty"`
+	FailureMessage     *string                  `json:"failureMessage,omitempty"`
+	Addresses          *v1beta1.MinerAddresses  `json:"addresses,omitempty"`
+	Phase              *string                  `json:"phase,omitempty"`
+	ObservedGeneration *int64                   `json:"observedGeneration,omitempty"`
+	Conditions         *v1beta1.Conditions      `json:"conditions,omitempty"`
 }
 
 // MinerStatusApplyConfiguration constructs an declarative configuration of the MinerStatus type for use with
@@ -36,8 +36,8 @@ func MinerStatus() *MinerStatusApplyConfiguration {
 // WithPodRef sets the PodRef field in the declarative configuration to the given value
 // and returns the receiver, so that objects can be built by chaining "With" function invocations.
 // If called multiple times, the PodRef field is set to the value of the last call.
-func (b *MinerStatusApplyConfiguration) WithPodRef(value *v1.ObjectReferenceApplyConfiguration) *MinerStatusApplyConfiguration {
-	b.PodRef = value
+func (b *MinerStatusApplyConfiguration) WithPodRef(value v1.ObjectReference) *MinerStatusApplyConfiguration {
+	b.PodRef = &value
 	return b
 }
 

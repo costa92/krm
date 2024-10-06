@@ -1,4 +1,4 @@
-// Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+// Copyright 2024 Qiuhong Long <costa9293@gmail.com>. All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/costa92/krm.
@@ -60,7 +60,7 @@ func ExtractMinerStatus(miner *appsv1beta1.Miner, fieldManager string) (*MinerAp
 
 func extractMiner(miner *appsv1beta1.Miner, fieldManager string, subresource string) (*MinerApplyConfiguration, error) {
 	b := &MinerApplyConfiguration{}
-	err := managedfields.ExtractInto(miner, internal.Parser().Type("com.github.superproj.onex.pkg.apis.apps.v1beta1.Miner"), fieldManager, b, subresource)
+	err := managedfields.ExtractInto(miner, internal.Parser().Type("com.github.costa92.krm.pkg.apis.apps.v1beta1.Miner"), fieldManager, b, subresource)
 	if err != nil {
 		return nil, err
 	}

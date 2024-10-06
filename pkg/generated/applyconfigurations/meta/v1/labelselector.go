@@ -1,4 +1,4 @@
-// Copyright 2022 Lingfei Kong <colin404@foxmail.com>. All rights reserved.
+// Copyright 2024 Qiuhong Long <costa9293@gmail.com>. All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file. The original repo for
 // this file is https://github.com/costa92/krm.
@@ -7,11 +7,15 @@
 
 package v1
 
+import (
+	v1 "k8s.io/client-go/applyconfigurations/meta/v1"
+)
+
 // LabelSelectorApplyConfiguration represents an declarative configuration of the LabelSelector type for use
 // with apply.
 type LabelSelectorApplyConfiguration struct {
-	MatchLabels      map[string]string                            `json:"matchLabels,omitempty"`
-	MatchExpressions []LabelSelectorRequirementApplyConfiguration `json:"matchExpressions,omitempty"`
+	MatchLabels      map[string]string                               `json:"matchLabels,omitempty"`
+	MatchExpressions []v1.LabelSelectorRequirementApplyConfiguration `json:"matchExpressions,omitempty"`
 }
 
 // LabelSelectorApplyConfiguration constructs an declarative configuration of the LabelSelector type for use with
@@ -37,7 +41,7 @@ func (b *LabelSelectorApplyConfiguration) WithMatchLabels(entries map[string]str
 // WithMatchExpressions adds the given value to the MatchExpressions field in the declarative configuration
 // and returns the receiver, so that objects can be build by chaining "With" function invocations.
 // If called multiple times, values provided by each call will be appended to the MatchExpressions field.
-func (b *LabelSelectorApplyConfiguration) WithMatchExpressions(values ...*LabelSelectorRequirementApplyConfiguration) *LabelSelectorApplyConfiguration {
+func (b *LabelSelectorApplyConfiguration) WithMatchExpressions(values ...*v1.LabelSelectorRequirementApplyConfiguration) *LabelSelectorApplyConfiguration {
 	for i := range values {
 		if values[i] == nil {
 			panic("nil value passed to WithMatchExpressions")
