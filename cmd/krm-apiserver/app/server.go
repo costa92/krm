@@ -182,6 +182,7 @@ func CreateKrmAPIServerConfig(opts options.CompletedOptions) (
 		[]*runtime.Scheme{legacyscheme.Scheme, extensionsapiserver.Scheme, aggregatorscheme.Scheme},
 		opts.GetOpenAPIDefinitions,
 	)
+	fmt.Println("CreateKrmAPIServerConfig storageFactory:", storageFactory)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/costa92/krm/cmd/krm-apiserver/app/options"
 	"github.com/costa92/krm/internal/controlplane"
 	"github.com/costa92/krm/internal/controlplane/apiserver"
@@ -56,8 +58,9 @@ func NewConfig(opts options.CompletedOptions) (*Config, error) {
 	c := &Config{
 		Options: opts,
 	}
-
+	fmt.Println("NewConfig Config:", opts)
 	controlPlane, serviceResolver, err := CreateKrmAPIServerConfig(opts)
+
 	if err != nil {
 		return nil, err
 	}
