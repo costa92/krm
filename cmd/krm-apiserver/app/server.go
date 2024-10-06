@@ -4,6 +4,9 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"net/http"
+	"net/url"
+
 	"github.com/costa92/krm/cmd/krm-apiserver/app/options"
 	"github.com/costa92/krm/internal/controlplane"
 	controlplaneapiserver "github.com/costa92/krm/internal/controlplane/apiserver"
@@ -19,6 +22,8 @@ import (
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	"k8s.io/apiserver/pkg/util/notfoundhandler"
+	"k8s.io/apiserver/pkg/util/webhook"
+	kubeinformers "k8s.io/client-go/informers"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/component-base/cli/globalflag"
 	"k8s.io/component-base/logs"
@@ -28,7 +33,7 @@ import (
 	aggregatorapiserver "k8s.io/kube-aggregator/pkg/apiserver"
 	aggregatorscheme "k8s.io/kube-aggregator/pkg/apiserver/scheme"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
-	"net/http"
+	"k8s.io/kubernetes/pkg/features"
 )
 
 const appName = "krm-apiserver"
@@ -172,7 +177,7 @@ func CreateKrmAPIServerConfig(opts options.CompletedOptions) (
 ) {
 	proxyTransport := CreateProxyTransport()
 
-	generiConfig, _, kubeSharedInformers, err := controlplaneapiserver.BuildGenericConfig(
+	genericConfig, _, kubeSharedInformers, storageFactory, err := controlplaneapiserver.BuildGenericConfig(
 		opts.CompletedOptions,
 		[]*runtime.Scheme{legacyscheme.Scheme, extensionsapiserver.Scheme, aggregatorscheme.Scheme},
 		opts.GetOpenAPIDefinitions,
@@ -180,5 +185,100 @@ func CreateKrmAPIServerConfig(opts options.CompletedOptions) (
 	if err != nil {
 		return nil, nil, err
 	}
-	return nil, nil, nil
+
+	opts.Metrics.Apply()
+
+	config := &controlplane.Config{
+		GenericConfig: genericConfig,
+		ExtraConfig: controlplane.ExtraConfig{
+			APIResourceConfigSource: storageFactory.APIResourceConfigSource,
+			StorageFactory:          storageFactory,
+			EventTTL:                opts.EventTTL,
+			EnableLogsSupport:       opts.EnableLogsHandler,
+			ProxyTransport:          proxyTransport,
+			//ExternalGroupResources: opts.ExternalGroupResources,
+			ExternalRESTStorageProviders: opts.ExternalRESTStorageProviders,
+			MasterCount:                  opts.MasterCount,
+			//VersionedInformers:           opts.SharedInformerFactory,
+			// Here we will use the config file of "onex" to create a client-go informers.
+			KubeVersionedInformers:     kubeSharedInformers,
+			InternalVersionedInformers: opts.InternalVersionedInformers,
+			ExternalVersionedInformers: opts.ExternalVersionedInformers,
+			ExternalPostStartHooks:     opts.ExternalPostStartHooks,
+		},
+	}
+
+	if utilfeature.DefaultFeatureGate.Enabled(features.UnknownVersionInteroperabilityProxy) {
+		config.ExtraConfig.PeerEndpointLeaseReconciler, err = controlplaneapiserver.CreatePeerEndpointLeaseReconciler(genericConfig.Config, storageFactory)
+		if err != nil {
+			return nil, nil, err
+		}
+		// build peer proxy config only if peer ca file exists
+		if opts.PeerCAFile != "" {
+			config.ExtraConfig.PeerProxy, err = controlplaneapiserver.BuildPeerProxy(
+				kubeSharedInformers,
+				genericConfig.StorageVersionManager,
+				opts.ProxyClientCertFile,
+				opts.ProxyClientKeyFile,
+				opts.PeerCAFile,
+				opts.PeerAdvertiseAddress,
+				genericConfig.APIServerID,
+				config.ExtraConfig.PeerEndpointLeaseReconciler,
+				config.GenericConfig.Serializer,
+			)
+			if err != nil {
+				return nil, nil, err
+			}
+		}
+	}
+
+	/* UPDATEME: when add authentication features.
+	clientCAProvider, err := opts.Authentication.ClientCert.GetClientCAContentProvider()
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	config.ExtraConfig.ClusterAuthenticationInfo.ClientCA = clientCAProvider
+
+	requestHeaderConfig, err := opts.Authentication.RequestHeader.ToAuthenticationRequestHeaderConfig()
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	if requestHeaderConfig != nil {
+		config.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderCA = requestHeaderConfig.CAContentProvider
+		config.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderAllowedNames = requestHeaderConfig.AllowedClientNames
+		config.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderExtraHeaderPrefixes = requestHeaderConfig.ExtraHeaderPrefixes
+		config.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderGroupHeaders = requestHeaderConfig.GroupHeaders
+		config.ExtraConfig.ClusterAuthenticationInfo.RequestHeaderUsernameHeaders = requestHeaderConfig.UsernameHeaders
+	}
+	*/
+
+	serviceResolver := buildServiceResolver(opts.EnableAggregatorRouting, genericConfig.LoopbackClientConfig.Host, kubeSharedInformers)
+
+	return config, serviceResolver, nil
+}
+
+var testServiceResolver webhook.ServiceResolver
+
+func buildServiceResolver(enabledAggregatorRouting bool, hostname string, informer kubeinformers.SharedInformerFactory) webhook.ServiceResolver {
+	if testServiceResolver != nil {
+		return testServiceResolver
+	}
+
+	var serviceResolver webhook.ServiceResolver
+	if enabledAggregatorRouting {
+		serviceResolver = aggregatorapiserver.NewEndpointServiceResolver(
+			informer.Core().V1().Services().Lister(),
+			informer.Core().V1().Endpoints().Lister(),
+		)
+	} else {
+		serviceResolver = aggregatorapiserver.NewClusterIPServiceResolver(
+			informer.Core().V1().Services().Lister(),
+		)
+	}
+
+	// resolve kubernetes.default.svc locally
+	if localHost, err := url.Parse(hostname); err == nil {
+		serviceResolver = aggregatorapiserver.NewLoopbackServiceResolver(serviceResolver, localHost)
+	}
+	return serviceResolver
 }

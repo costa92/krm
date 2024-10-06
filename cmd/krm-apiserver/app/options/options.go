@@ -1,7 +1,11 @@
 package options
 
 import (
+	"net"
+
+	"github.com/costa92/krm/internal/controlplane"
 	controlplaneoptions "github.com/costa92/krm/internal/controlplane/apiserver/options"
+	"github.com/costa92/krm/pkg/apiserver/storage"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/kube-openapi/pkg/common"
@@ -16,10 +20,16 @@ type ServerRunOptions struct {
 
 type Extra struct {
 	MasterCount int
+	// In the future, perhaps an "onexlet" will be added, similar to the "kubelet".
+	// OnexletConfig onexletclient.OnexletClientConfig
+	APIServerServiceIP     net.IP
+	EndpointReconcilerType string
 
 	// For external resources
-	ExternalPostStartHooks map[string]genericapiserver.PostStartHookFunc
-	GetOpenAPIDefinitions  common.GetOpenAPIDefinitions
+	ExternalRESTStorageProviders []storage.RESTStorageProvider
+	ExternalVersionedInformers   controlplane.ExternalSharedInformerFactory
+	ExternalPostStartHooks       map[string]genericapiserver.PostStartHookFunc
+	GetOpenAPIDefinitions        common.GetOpenAPIDefinitions
 }
 
 // NewServerRunOptions returns a new ServerRunOptions.

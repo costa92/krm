@@ -3,7 +3,9 @@ package app
 import (
 	"github.com/costa92/krm/cmd/krm-apiserver/app/options"
 	"github.com/costa92/krm/internal/controlplane"
+	"github.com/costa92/krm/internal/controlplane/apiserver"
 	apiextensionsapiserver "k8s.io/apiextensions-apiserver/pkg/apiserver"
+	"k8s.io/apiserver/pkg/util/webhook"
 	aggregatorapiserver "k8s.io/kube-aggregator/pkg/apiserver"
 )
 
@@ -59,5 +61,42 @@ func NewConfig(opts options.CompletedOptions) (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	c.ControlPlane = controlPlane
+	apiExtensions, err := apiserver.CreateAPIExtensionsConfig(
+		controlPlane.GenericConfig.Config,
+		controlPlane.ExtraConfig.KubeVersionedInformers,
+		nil,
+		opts.CompletedOptions,
+		3,
+		serviceResolver,
+		webhook.NewDefaultAuthenticationInfoResolverWrapper(
+			controlPlane.ExtraConfig.ProxyTransport,
+			controlPlane.GenericConfig.EgressSelector,
+			controlPlane.GenericConfig.LoopbackClientConfig,
+			controlPlane.GenericConfig.TracerProvider,
+		),
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	c.ApiExtensions = apiExtensions
+
+	aggregator, err := createAggregatorConfig(
+		controlPlane.GenericConfig.Config,
+		opts.CompletedOptions,
+		controlPlane.ExtraConfig.KubeVersionedInformers,
+		serviceResolver,
+		controlPlane.ExtraConfig.ProxyTransport,
+		controlPlane.ExtraConfig.PeerProxy,
+		nil,
+	)
+	if err != nil {
+		return nil, err
+	}
+	c.Aggregator = aggregator
+
 	return c, nil
 }

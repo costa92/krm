@@ -2,24 +2,34 @@ package app
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+	"sync"
+
+	controlplaneoptions "github.com/costa92/krm/internal/controlplane/apiserver/options"
+	"github.com/costa92/krm/pkg/apis/apps/v1beta1"
 	apiextensionsinformers "k8s.io/apiextensions-apiserver/pkg/client/informers/externalversions"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/apiserver/pkg/admission"
+	genericfeatures "k8s.io/apiserver/pkg/features"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	"k8s.io/apiserver/pkg/server/healthz"
+	utilfeature "k8s.io/apiserver/pkg/util/feature"
+	utilpeerproxy "k8s.io/apiserver/pkg/util/peerproxy"
+	kubeinformers "k8s.io/client-go/informers"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/klog/v2"
 	v1 "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1"
 	v1helper "k8s.io/kube-aggregator/pkg/apis/apiregistration/v1/helper"
 	aggregatorapiserver "k8s.io/kube-aggregator/pkg/apiserver"
+	aggregatorscheme "k8s.io/kube-aggregator/pkg/apiserver/scheme"
 	apiregistrationclient "k8s.io/kube-aggregator/pkg/client/clientset_generated/clientset/typed/apiregistration/v1"
 	informers "k8s.io/kube-aggregator/pkg/client/informers/externalversions/apiregistration/v1"
 	"k8s.io/kube-aggregator/pkg/controllers/autoregister"
 	"k8s.io/kubernetes/pkg/controlplane/controller/crdregistration"
-	"net/http"
-	"strings"
-	"sync"
 )
 
 func createAggregatorServer(aggregatorConfig aggregatorapiserver.CompletedConfig,
@@ -192,3 +202,82 @@ func makeAPIService(gv schema.GroupVersion) *v1.APIService {
 		},
 	}
 }
+
+func createAggregatorConfig(
+	krmAPIServerConfig genericapiserver.Config,
+	commandOptions controlplaneoptions.CompletedOptions,
+	externalInformers kubeinformers.SharedInformerFactory,
+	serviceResolver aggregatorapiserver.ServiceResolver,
+	proxyTransport *http.Transport,
+	peerProxy utilpeerproxy.Interface,
+	pluginInitializers []admission.PluginInitializer,
+) (*aggregatorapiserver.Config, error) {
+
+	genericConfig := krmAPIServerConfig
+	genericConfig.PostStartHooks = map[string]genericapiserver.PostStartHookConfigEntry{}
+	genericConfig.RESTOptionsGetter = nil
+
+	// prevent generic API server from installing the OpenAPI handler. Aggregator server
+	// has its own customized OpenAPI handler.
+	genericConfig.SkipOpenAPIInstallation = true
+
+	if utilfeature.DefaultFeatureGate.Enabled(genericfeatures.StorageVersionAPI) &&
+		utilfeature.DefaultFeatureGate.Enabled(genericfeatures.APIServerIdentity) {
+		// Add StorageVersionPrecondition handler to aggregator-apiserver.
+		// The handler will block write requests to built-in resources until the
+		// target resources' storage versions are up-to-date.
+		genericConfig.BuildHandlerChainFunc = genericapiserver.BuildHandlerChainWithStorageVersionPrecondition
+	}
+
+	if peerProxy != nil {
+		originalHandlerChainBuilder := genericConfig.BuildHandlerChainFunc
+		genericConfig.BuildHandlerChainFunc = func(apiHandler http.Handler, c *genericapiserver.Config) http.Handler {
+			// Add peer proxy handler to aggregator-apiserver.
+			// wrap the peer proxy handler first.
+			apiHandler = peerProxy.WrapHandler(apiHandler)
+			return originalHandlerChainBuilder(apiHandler, c)
+		}
+	}
+
+	// copy the etcd options so we don't mutate originals.
+	// we assume that the etcd options have been completed already.  avoid messing with anything outside
+	// of changes to StorageConfig as that may lead to unexpected behavior when the options are applied.
+	etcdOptions := *commandOptions.RecommendedOptions.Etcd
+	etcdOptions.StorageConfig.Codec = aggregatorscheme.Codecs.LegacyCodec(v1.SchemeGroupVersion, v1beta1.SchemeGroupVersion)
+	etcdOptions.StorageConfig.EncodeVersioner = runtime.NewMultiGroupVersioner(v1.SchemeGroupVersion, schema.GroupKind{Group: v1beta1.GroupName})
+	etcdOptions.SkipHealthEndpoints = true // avoid double wiring of health checks
+	if err := etcdOptions.ApplyTo(&genericConfig); err != nil {
+		return nil, err
+	}
+
+	// override MergedResourceConfig with aggregator defaults and registry
+	if err := commandOptions.APIEnablement.ApplyTo(
+		&genericConfig,
+		aggregatorapiserver.DefaultAPIResourceConfigSource(),
+		aggregatorscheme.Scheme); err != nil {
+		return nil, err
+	}
+
+	aggregatorConfig := &aggregatorapiserver.Config{
+		GenericConfig: &genericapiserver.RecommendedConfig{
+			Config:                genericConfig,
+			SharedInformerFactory: externalInformers,
+		},
+		ExtraConfig: aggregatorapiserver.ExtraConfig{
+			ProxyClientCertFile:  commandOptions.ProxyClientCertFile,
+			ProxyClientKeyFile:   commandOptions.ProxyClientKeyFile,
+			PeerCAFile:           commandOptions.PeerCAFile,
+			PeerAdvertiseAddress: commandOptions.PeerAdvertiseAddress,
+			//ServiceResolver:           serviceResolver,
+			ProxyTransport:            proxyTransport,
+			RejectForwardingRedirects: commandOptions.AggregatorRejectForwardingRedirects,
+		},
+	}
+
+	// we need to clear the poststarthooks so we don't add them multiple times to all the servers (that fails)
+	aggregatorConfig.GenericConfig.PostStartHooks = map[string]genericapiserver.PostStartHookConfigEntry{}
+
+	return aggregatorConfig, nil
+}
+
+// Create the API aggregator server}
