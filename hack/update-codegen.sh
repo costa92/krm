@@ -368,20 +368,6 @@ function codegen::clients() {
         || true) \
         | xargs -0 rm -f
 
-
-    # 打印 client-gen 命令
-    echo client-gen \
-        -v "${KUBE_VERBOSE}" \
-        --go-header-file "${BOILERPLATE_FILENAME}" \
-        --included-types-overrides core/v1/Namespace,core/v1/ConfigMap,core/v1/Event,core/v1/Secret,apiextensions/v1/CustomResourceDefinition \
-        --output-dir "${KRM_ROOT}/pkg/generated/clientset" \
-        --output-pkg="${OUTPUT_PKG}/clientset" \
-        --clientset-name="versioned" \
-        --input-base="" \
-        --plural-exceptions "${PLURAL_EXCEPTIONS}" \
-        --apply-configuration-package "${APPLYCONFIG_PKG}" \
-        $(printf -- " --input %s" "${gv_dirs[@]}") \
-        "$@"
     # UPDATEME: When add new k8s resource.
     client-gen \
         -v "${KUBE_VERBOSE}" \
@@ -511,19 +497,6 @@ function codegen::informers() {
         ':(glob)pkg/generated/**/*.go' \
         || true) \
         | xargs -0 rm -f
-
-    #  打印 informer-gen 执行命令
-    echo "informer-gen \\
-        -v \"${KUBE_VERBOSE}\" \\
-        --go-header-file \"${BOILERPLATE_FILENAME}\" \\
-        --output-dir \"${KRM_ROOT}/pkg/generated/informers\" \\
-        --output-pkg \"${OUTPUT_PKG}/informers\" \\
-        --single-directory \\
-        --versioned-clientset-package \"${OUTPUT_PKG}/clientset/versioned\" \\
-        --listers-package \"${OUTPUT_PKG}/listers\" \\
-        --plural-exceptions \"${PLURAL_EXCEPTIONS}\" \\
-        \"${ext_apis[@]}\" \\
-        \"$@\""
 
     informer-gen \
         -v "${KUBE_VERBOSE}" \
