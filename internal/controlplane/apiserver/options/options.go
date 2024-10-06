@@ -2,6 +2,7 @@ package options
 
 import (
 	"github.com/costa92/krm/internal/pkg/options"
+	"github.com/costa92/krm/pkg/generated/informers"
 	genericoptions "k8s.io/apiserver/pkg/server/options"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/component-base/logs"
@@ -14,6 +15,8 @@ type Options struct {
 	Logs                    *logs.Options
 
 	RecommendedOptions *options.RecommendedOptions
+
+	InternalVersionedInformers informers.SharedInformerFactory
 }
 
 // completedServerRunOptions is a private wrapper that enforces a call of Complete() before Run can be invoked.

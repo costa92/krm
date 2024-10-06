@@ -1,12 +1,12 @@
 package apiserver
 
 import (
+	initializer "github.com/costa92/krm/internal/controlplane/admission/initializer"
 	controlplaneoptions "github.com/costa92/krm/internal/controlplane/apiserver/options"
 	"github.com/costa92/krm/pkg/generated/clientset/versioned"
 	"github.com/costa92/krm/pkg/generated/informers"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apiserver/pkg/admission"
-	"k8s.io/apiserver/pkg/admission/initializer"
 	genericapiserver "k8s.io/apiserver/pkg/server"
 	serverstorage "k8s.io/apiserver/pkg/server/storage"
 	kubeinformers "k8s.io/client-go/informers"
