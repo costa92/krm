@@ -1,8 +1,6 @@
 package options
 
 import (
-	"fmt"
-
 	controlplaneoptions "github.com/costa92/krm/internal/controlplane/apiserver/options"
 )
 
@@ -42,8 +40,5 @@ func (o *ServerRunOptions) Complete() (CompletedOptions, error) {
 		CompletedOptions: controllable,
 		Extra:            o.Extra,
 	}
-
-	fmt.Println("completedOptions.Extra.MasterCount:", completed.Extra.MasterCount)
-
 	return CompletedOptions{&completed}, nil
 }
