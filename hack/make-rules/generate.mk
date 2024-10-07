@@ -10,7 +10,7 @@ echo SERVICES: $(SERVICES)
 gen.ca.%: ## Generate CA files.
 	$(eval CA := $(word 1,$(subst ., ,$*)))
 	@echo "===========> Generating CA files for $(CA)"
-	@${SCRIPTS_DIR}/gen-certs.sh generate-node-cert $(OUTPUT_DIR)/cert $(CA)
+	@$(SCRIPTS_DIR)/gen-certs.sh generate-node-cert $(OUTPUT_DIR)/cert $(CA)
 
 .PHONY: gen.ca
 gen.ca: $(addprefix gen.ca., $(CERTIFICATES)) ## Generate all CA files.

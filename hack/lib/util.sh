@@ -144,7 +144,7 @@ function krm::util::find-binary-for-platform() {
   local -r bin=$( (ls -t "${locations[@]}" 2>/dev/null || true) | head -1 )
 
   if [[ -z "${bin}" ]]; then
-    onex::log::error "Failed to find binary ${lookfor} for platform ${platform}"
+    krm::log::error "Failed to find binary ${lookfor} for platform ${platform}"
     return 1
   fi
 
@@ -240,4 +240,99 @@ function krm::util::group-version-to-pkg-path() {
       echo "pkg/apis/${group_version%__internal}"
       ;;
   esac
+}
+
+
+
+# Downloads cfssl/cfssljson/cfssl-certinfo into $1 directory if they do not already exist in PATH
+#
+# Assumed vars:
+#   $1 (cfssl directory) (optional)
+#
+# Sets:
+#  CFSSL_BIN: The path of the installed cfssl binary
+#  CFSSLJSON_BIN: The path of the installed cfssljson binary
+#  CFSSLCERTINFO_BIN: The path of the installed cfssl-certinfo binary
+#
+
+function krm::util::ensure-cfssl {
+  host_os=$(krm::util::host_os)
+  if [[ "${host_os}" == "linux" ]]; then
+      krm::util::linux::ensure-cfssl "$1"
+    exit 1
+  fi
+  if [[ "${host_os}" == "darwin" ]]; then
+      krm::util::darwin::ensure-cfssl "$1"
+      return 0
+  fi
+
+}
+
+function krm::util::darwin::ensure-cfssl {
+  if command -v cfssl &>/dev/null && command -v cfssljson &>/dev/null; then
+    CFSSL_BIN=$(command -v cfssl)
+    CFSSLJSON_BIN=$(command -v cfssljson)
+    return 0
+  fi
+  popd > /dev/null || return 1
+}
+
+function krm::util::linux::ensure-cfssl {
+  if command -v cfssl &>/dev/null && command -v cfssljson &>/dev/null && command -v cfssl-certinfo &>/dev/null; then
+    CFSSL_BIN=$(command -v cfssl)
+    CFSSLJSON_BIN=$(command -v cfssljson)
+    CFSSLCERTINFO_BIN=$(command -v cfssl-certinfo)
+    return 0
+  fi
+
+  host_arch=$(krm::util::host_arch)
+  if [[ "${host_arch}" != "amd64" ]]; then
+    echo "Cannot download cfssl on non-amd64 hosts and cfssl does not appear to be installed."
+    echo "Please install cfssl, cfssljson and cfssl-certinfo and verify they are in \$PATH."
+    echo "Hint: export PATH=\$PATH:\$GOPATH/bin; go get -u github.com/cloudflare/cfssl/cmd/..."
+    exit 1
+  fi
+
+  # Create a temp dir for cfssl if no directory was given
+  local cfssldir=${1:-}
+  if [[ -z "${cfssldir}" ]]; then
+    cfssldir="$HOME/bin"
+  fi
+
+  mkdir -p "${cfssldir}"
+  pushd "${cfssldir}" > /dev/null || return 1
+
+  echo "Unable to successfully run 'cfssl' from ${PATH}; downloading instead..."
+  kernel=$(uname -s)
+  case "${kernel}" in
+    Linux)
+      curl --retry 10 -L -o cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+      curl --retry 10 -L -o cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+      curl --retry 10 -L -o cfssl-certinfo https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64
+      ;;
+    Darwin)
+      curl --retry 10 -L -o cfssl https://pkg.cfssl.org/R1.2/cfssl_darwin-amd64
+      curl --retry 10 -L -o cfssljson https://pkg.cfssl.org/R1.2/cfssljson_darwin-amd64
+      curl --retry 10 -L -o cfssl-certinfo https://pkg.cfssl.org/R1.2/cfssl-certinfo_darwin-amd64
+      ;;
+    *)
+      echo "Unknown, unsupported platform: ${kernel}." >&2
+      echo "Supported platforms: Linux, Darwin." >&2
+      exit 2
+  esac
+
+  chmod +x cfssl || true
+  chmod +x cfssljson || true
+  chmod +x cfssl-certinfo || true
+
+  CFSSL_BIN="${cfssldir}/cfssl"
+  CFSSLJSON_BIN="${cfssldir}/cfssljson"
+  CFSSLCERTINFO_BIN="${cfssldir}/cfssl-certinfo"
+  if [[ ! -x ${CFSSL_BIN} || ! -x ${CFSSLJSON_BIN} || ! -x ${CFSSLCERTINFO_BIN} ]]; then
+    echo "Failed to download 'cfssl'."
+    echo "Please install cfssl, cfssljson and cfssl-certinfo and verify they are in \$PATH."
+    echo "Hint: export PATH=\$PATH:\$GOPATH/bin; go get -u github.com/cloudflare/cfssl/cmd/..."
+    exit 1
+  fi
+  popd > /dev/null || return 1
 }

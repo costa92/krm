@@ -33,6 +33,10 @@ function generate-node-cert() {
   local prefix=${2:-}
   local expiry=${3:-876000h}
 
+  echo "cert_dir: ${cert_dir}"
+  echo "prefix: ${prefix}"
+  echo "expiry: ${expiry}"
+
 
   mkdir -p "${cert_dir}"
   pushd "${cert_dir}" >/dev/null 2>&1
@@ -94,7 +98,7 @@ EOF
     return 0
   fi
 
-  #echo "Generate "${prefix}" certificates..."
+  echo "Generate "${prefix}" certificates..."
   echo '{"CN":"'"${prefix}"'","hosts":[],"key":{"algo":"rsa","size":2048},"names":[{"C":"CN","ST":"Shenzhen","L":"Shenzhen","O":"tencent","OU":"'"${prefix}"'"}]}' \
     | ${CFSSL_BIN} gencert -hostname="${CERT_HOSTNAME},${prefix/-/.}.${DEFAULT_KUBERNETES_CLUSTER_DOMAIN},${prefix/-/.}.${PROJ_DOMAIN}" -ca=ca.pem -ca-key=ca-key.pem \
     -config=ca-config.json -profile=node - | ${CFSSLJSON_BIN} -bare "${prefix}"
